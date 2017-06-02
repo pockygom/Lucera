@@ -11,11 +11,9 @@ import datetime
 from time import sleep
 
 # Slack Token for app
-token = 'xoxp-2154625182-190672578374-190017115328-a2b63e101c1f938da030c6c86ba45def'
 sc = SlackClient(token)
 
 # Slack Token for bot
-bot_token = 'xoxb-191262507666-b60ESfb7karu3hSGrEGHKM13'
 sc_bot = SlackClient(bot_token)
 
 # Connect to RTM
