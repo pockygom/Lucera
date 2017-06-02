@@ -12,17 +12,13 @@ from datetime import datetime, timedelta
 from time import sleep
 
 # Slack Token for app
-<<<<<<< HEAD
 token = os.environ.get('SLACK_TOKEN')
 sc = SlackClient(token)
 
 # Slack Token for bot
 bot_token = token = os.environ.get('SLACK_BOT_TOKEN')
-=======
-sc = SlackClient(token)
 
 # Slack Token for bot
->>>>>>> 559185a92c4fbf4b58331712dbb8b7947abdc7c5
 sc_bot = SlackClient(bot_token)
 
 # Connect to RTM

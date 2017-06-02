@@ -16,9 +16,7 @@ token = os.environ.get('SLACK_TOKEN')
 sc = SlackClient(token)
 
 # Slack Token for bot
-bot_token = token = os.environ.get('SLACK_BOT_TOKEN')
-
-# Slack Token for bot
+bot_token = os.environ.get('SLACK_BOT_TOKEN')
 sc_bot = SlackClient(bot_token)
 
 # Connect to RTM
