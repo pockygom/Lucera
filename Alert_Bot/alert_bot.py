@@ -6,16 +6,17 @@
 
 from slackclient import SlackClient
 import sys
+import os
 import info
-import datetime
+from datetime import datetime, timedelta
 from time import sleep
 
 # Slack Token for app
-token = 'xoxp-2154625182-190672578374-190017115328-a2b63e101c1f938da030c6c86ba45def'
+token = os.environ.get('SLACK_TOKEN')
 sc = SlackClient(token)
 
 # Slack Token for bot
-bot_token = 'xoxb-191262507666-b60ESfb7karu3hSGrEGHKM13'
+bot_token = token = os.environ.get('SLACK_BOT_TOKEN')
 sc_bot = SlackClient(bot_token)
 
 # Connect to RTM
@@ -48,18 +49,18 @@ def send_msg(message, attachment, chan, now, last_sent):
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message, attachments=attachment)
 
 	# Record the time that the message was sent
-	send_time = datetime.datetime.now()
-	send_time = send_time - datetime.timedelta(microseconds=now.microsecond)
+	send_time = datetime.now()
+	send_time = send_time - timedelta(microseconds=now.microsecond)
 	return send_time
 
 # Some initializers
 event_list = []
-last_sent = datetime.datetime.strptime('Jan', '%b')
+last_sent = datetime.strptime('Jan', '%b')
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
-	now = datetime.datetime.now()
-	now = now - datetime.timedelta(seconds=now.second,
+	now = datetime.now()
+	now = now - timedelta(seconds=now.second,
 		microseconds=now.microsecond)
 
 	# Event alerts
@@ -81,13 +82,14 @@ while True:
 
 			# List of commands
 			if command == '!parse':
+				print('Parsing list of upcoming events.')
 				event_list = info.event_parse(command_tags, now)
 			elif command == '!events':
+				print('Sending upcoming event list.')
 				msg, att, chan = info.compose_message(event_list, now)
-				print(now)
-				print(last_sent)
 				last_sent = send_msg(msg, att, chan, now, last_sent)
 			elif command == '!alert':
+				print('Sending log of recent latency alerts.')
 				last_sent = send_msg(alert.message, alert.attachment, alert.chan, now)
 
 	# Kill command
