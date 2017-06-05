@@ -125,7 +125,7 @@ def event_alerts(event_list, curr_time):
 	for row in event_list:
 		time_until = conv_time(row) - curr_time
 		for timers in event_timers:
-			if time_until.days == 0 & time_until.seconds/60 == timers:
+			if (time_until.days == 0) & (time_until.seconds/60 == timers):
 				alert_list.append(row)
 				if timers == event_timers[0]:
 					event_del_queue += 1
