@@ -19,9 +19,6 @@ sc = SlackClient(token)
 bot_token = os.environ.get('SLACK_BOT_TOKEN')
 sc_bot = SlackClient(bot_token)
 
-# Connect to RTM
-rtm = sc_bot.rtm_connect()
-
 msg_interval = 60 # Seconds
 
 # Function for sendng message/attachments
@@ -65,8 +62,8 @@ while True:
 
 	# Parse channel messages
 	rcvd_call = ['-1']
-	red = sc_bot.rtm_read()
-	for call in red:
+	rcvd = sc_bot.rtm_read()
+	for call in rcvd:
 		if call['type'] == 'message':
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]

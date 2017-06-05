@@ -19,6 +19,12 @@ sc = SlackClient(token)
 bot_token = os.environ.get('SLACK_BOT_TOKEN')
 sc_bot = SlackClient(bot_token)
 
+# Connect to RTM
+while True:
+	rtm = sc_bot.rtm_connect()
+	if rtm:
+		break
+
 msg_interval = 60 # Seconds
 
 # Function for sendng message/attachments
