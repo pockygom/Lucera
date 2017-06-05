@@ -23,6 +23,7 @@ sc_bot = SlackClient(bot_token)
 while True:
 	rtm = sc_bot.rtm_connect()
 	if rtm:
+		print('Connected')
 		break
 
 msg_interval = 60 # Seconds
