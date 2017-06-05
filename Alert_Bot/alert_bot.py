@@ -22,7 +22,7 @@ sc_bot = SlackClient(bot_token)
 # Connect to RTM
 while True:
 	print('Connecting...')
-	if sc_bot.rtm_connect():
+	if sc.rtm_connect():
 		print('Connected!')
 		break
 
@@ -69,8 +69,8 @@ while True:
 
 	# Parse channel messages
 	rcvd_call = ['-1']
-	red = sc_bot.rtm_read()
-	for call in red:
+	rcvd = sc.rtm_read()
+	for call in rcvd:
 		if call['type'] == 'message':
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
