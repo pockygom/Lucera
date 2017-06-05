@@ -9,7 +9,7 @@ from threading import Timer
 from datetime import datetime, timedelta, date
 
 # Calender update interval in seconds
-calender_update_timer = 3600
+calender_update_timer = 1800 # Half hour
 
 # Current year
 current_year = [str(datetime.now().year)]
