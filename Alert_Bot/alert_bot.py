@@ -44,7 +44,6 @@ def send_msg(message, attachment, chan, now):
 		print('Waiting for ' + str(60 - time_into_minute) + ' seconds until next command.')
 		sleep(60 - time_into_minute)
 		print('Sending message...')
-	return(send_time)
 
 # Some initializers
 event_list = []
