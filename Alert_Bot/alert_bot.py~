@@ -87,6 +87,7 @@ while True:
 				print('Sending upcoming event list.')
 				msg, att = info.compose_event_message(event_list, now)
 				send_msg(msg, att, info.chan, now)
+
 			elif command == '!alert':
 				print('Sending log of recent latency alerts.')
 				send_msg(msg, att, alert.chan, now)

@@ -48,6 +48,7 @@ def send_msg(message, attachment, chan, now):
 		print('Waiting for ' + str(60 - time_into_minute) + ' seconds until next command.')
 		sleep(60 - time_into_minute)
 		print('Sending message...')
+	return(send_time)
 
 # Some initializers
 event_list = []
@@ -64,7 +65,7 @@ while True:
 		alert_list, event_list = info.event_alerts(event_list, now)
 		if alert_list:
 			msg, att = info.compose_event_message(alert_list, now)
-			send_msg(msg, att, info.chan, now)
+			send_time = send_msg(msg, att, info.chan, now)
 			print('Alert sent at %s' % str(send_time))
 
 	# Parse channel messages
