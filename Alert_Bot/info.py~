@@ -66,7 +66,7 @@ def event_parse(msg_tags, datetime):
 def compose_message(event_list, curr_time):
 	att = []
 	if not event_list:
-		msg = 'Wrong tag. Tags include High, Medium, Low, and currencies.'
+		msg = 'No events available.'
 	else:
 		msg = 'Upcoming Events'
 		for row in event_list:

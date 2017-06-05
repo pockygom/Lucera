@@ -23,24 +23,10 @@ sc_bot = SlackClient(bot_token)
 # Connect to RTM
 rtm = sc_bot.rtm_connect()
 
-msg_interval = 15 # Seconds
+msg_interval = 60 # Seconds
 
 # Function for sendng message/attachments
-def send_msg(message, attachment, chan, now, last_sent):
-	time_last_msg = (now - last_sent).seconds
-	neg_time_last_msg = (last_sent - now).seconds
-
-	# Wait until message interval passes (prevent spam)
-	if neg_time_last_msg < 60: # Deal with negative time_last_msg
-		print('Waiting for ' + str(60 - neg_time_last_msg) + ' seconds until sending next message.')
-		sleep(60 - neg_time_last_msg)
-		print('Sending message...')
-
-	elif time_last_msg < msg_interval:
-		print('Waiting for ' + str(msg_interval - time_last_msg) + ' seconds until sending next message.')
-		sleep(msg_interval - time_last_msg)
-		print('Sending message...')
-
+def send_msg(message, attachment, chan, now):
 	# Send message to Slack
 	if not isinstance(message,str):
 		message = 'Error: Message not a string'
@@ -52,7 +38,14 @@ def send_msg(message, attachment, chan, now, last_sent):
 	# Record the time that the message was sent
 	send_time = datetime.now()
 	send_time = send_time - timedelta(microseconds=now.microsecond)
-	return send_time
+
+	# Wait until message interval passes (prevent spam)
+	time_into_minute = (send_time - now).seconds
+	if time_into_minute < 60: # Wait until next second
+		print('Waiting for ' + str(60 - time_into_minute) + ' seconds until next command.')
+		sleep(60 - time_into_minute)
+		print('Sending message...')
+	return(send_time)
 
 # Some initializers
 event_list = []
@@ -68,9 +61,9 @@ while True:
 	if event_list:
 		alert_list, event_list = info.event_alerts(event_list, now)
 		if alert_list:
-			print('Alert List')
-			msg, att, chan = info.compose_message(alert_list, now)
-			last_sent = send_msg(msg, att, chan, now, last_sent)
+			msg, att = info.compose_event_message(alert_list, now)
+			send_msg(msg, att, info.chan, now)
+			print('Alert sent at %s' % str(send_time))
 
 	# Parse channel messages
 	rcvd_call = ['-1']
@@ -83,15 +76,17 @@ while True:
 
 			# List of commands
 			if command == '!parse':
-				print('Parsing list of upcoming events.')
+				print('Parsing list of upcoming events with the following tags: %s.' % command_tags)
 				event_list = info.event_parse(command_tags, now)
+				parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
+				send_msg(parse_msg, [], info.chan, now)
 			elif command == '!events':
 				print('Sending upcoming event list.')
-				msg, att, chan = info.compose_message(event_list, now)
-				last_sent = send_msg(msg, att, chan, now, last_sent)
+				msg, att = info.compose_event_message(event_list, now)
+				send_msg(msg, att, info.chan, now)
 			elif command == '!alert':
 				print('Sending log of recent latency alerts.')
-				last_sent = send_msg(alert.message, alert.attachment, alert.chan, now)
+				send_msg(msg, att, alert.chan, now)
 
 	# Kill command
 	if rcvd_call == 'Kill Alert Bot!':
