@@ -26,6 +26,7 @@ while True:
 		print('Connected!')
 		break
 
+# Messaging interval to prevent spamming
 msg_interval = 60 # Seconds
 
 # Function for sendng message/attachments
@@ -85,7 +86,7 @@ while True:
 				parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
 				_, att = info.compose_event_message(event_list, now)
 				_ = send_msg(parse_msg, att, info.chan, now)
-				event_calender, event_list = info.update_event_list(event_calender, command_tags, now)
+				event_calender, event_list = info.update_event_list(command_tags, now)
 
 			elif command == '!events':
 				print('Sending upcoming event list.')
