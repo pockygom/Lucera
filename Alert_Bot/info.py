@@ -52,8 +52,8 @@ def get_cal():
 	return(event_calender)
 
 # Event CSV Updater
-def update_event_list(event_calendar, command_tags, curr_time):
-	th = Timer(calender_update_timer, update_event_list, [event_calender])
+def update_event_list(command_tags, curr_time):
+	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time])
 	th.start()
 	print('Event list refreshed')
 	event_calender, event_list = event_parse(command_tags, curr_time)
