@@ -44,16 +44,18 @@ def get_cal():
 	now = date.today()
 	csv_url = get_csv_url(now)
 	print('Downloading calendar from {}'.format(csv_url))
+
+	# Formatting
 	r = requests.get(csv_url)
 	cal_csv = r.text.split('\n')
-	del(cal_csv[0])
+	del(cal_csv[0]) # Remove header
 	for row in cal_csv:
 		event_calender.append(row.split(','))
 	return(event_calender)
 
 # Event CSV Updater
 def update_event_list(command_tags, curr_time):
-	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time])
+	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
 	th.start()
 	print('Event list refreshed')
 	event_calender, event_list = event_parse(command_tags, curr_time)
@@ -80,7 +82,8 @@ def event_parse(command_tags, curr_time):
 		next_row = False
 		if row[0]:
 			event_time = conv_time(row)
-			if curr_time < event_time: # Search for events that haven't passed.
+			#if curr_time < event_time: # Search for events that haven't passed.
+			if True:
 				for imp_tag in imp_tags:
 					for cur_tag in cur_tags:
 						if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):
@@ -114,6 +117,7 @@ def compose_event_message(event_list, curr_time):
 				]
 			}
 			att.append(att_temp)
+			print(row)
 	return(msg, att)
 
 # Determine events to alert based off of timers
