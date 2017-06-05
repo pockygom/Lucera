@@ -40,6 +40,7 @@ def get_csv_url(date):
 
 # Event CSV getter
 def get_cal():
+	event_calender = []
 	now = date.today()
 	csv_url = get_csv_url(now)
 	print('Downloading calendar from {}'.format(csv_url))
@@ -47,8 +48,8 @@ def get_cal():
 	cal_csv = r.text.split('\n')
 	del(cal_csv[0])
 	for row in cal_csv:
-		cal_csv.split(',')
-	return(cal_csv)
+		event_calender.append(row.split(','))
+	return(event_calender)
 
 # Event CSV Updater
 def update_event_list(event_calendar, command_tags, curr_time):

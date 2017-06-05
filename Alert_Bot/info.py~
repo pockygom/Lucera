@@ -46,6 +46,8 @@ def get_cal():
 	r = requests.get(csv_url)
 	cal_csv = r.text.split('\n')
 	del(cal_csv[0])
+	for row in cal_csv:
+		cal_csv.split(',')
 	return(cal_csv)
 
 # Event CSV Updater
