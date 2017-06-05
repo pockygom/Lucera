@@ -4,13 +4,15 @@
 # May 31 2017
 
 import csv
-from datetime import datetime
+import requests
+from threading import Timer
+from datetime import datetime, timedelta, date
+
+# Calender update interval in seconds
+calender_update_timer = 30
 
 # Current year
 current_year = [str(datetime.now().year)]
-
-# Event CSV file
-path = './Calendar-05-28-2017.csv'
 
 # Slack channel
 chan = 'lumefx-data-alerts'
@@ -29,38 +31,61 @@ cur_ind = 3
 # Set of timers in minutes
 event_timers = [0, 5, 15, 30, 60, 120, 360, 720]
 
+# Event CSV url formatter
+def get_csv_url(date):
+	prev_sunday = date - timedelta(days=date.weekday() + 1 % 7)
+	return('https://www.dailyfx.com/files/Calendar-'
+		+ prev_sunday.strftime('%m-%d-%Y')
+		+ '.csv')
+
+# Event CSV getter
+def get_cal():
+	now = date.today()
+	csv_url = get_csv_url(now)
+	print('Downloading calendar from {}'.format(csv_url))
+	r = requests.get(csv_url)
+	cal_csv = r.text.split('\n')
+	return(cal_csv)
+
+# Event CSV Updater
+def update_event_list(event_calendar, command_tags, curr_time):
+	th = Timer(calender_update_timer, autoupdate_cal, [event_calender])
+	th.start()
+	print('Event list refreshed')
+	event_calender, event_list = event_parse(command_tags, curr_time)
+	return(event_calender, event_list)
+
 # Parse through the events CSV file
-def event_parse(msg_tags, datetime):
+def event_parse(command_tags, curr_time):
 	# Initialize
 	event_list = []
-	with open(path, 'r') as csvfile:
-		event_reader = csv.reader(csvfile)
-		next(event_reader, None)
+	event_calender = get_cal()
 
-		# Check for tags
-		imp_tags = set(imp_ids).intersection(msg_tags)
-		cur_tags = set(cur_ids).intersection(msg_tags)
+	# Check for tags
+	imp_tags = set(imp_ids).intersection(command_tags)
+	cur_tags = set(cur_ids).intersection(command_tags)
 
-		# No tags = include all tags
-		if not imp_tags:
-			imp_tags = imp_ids
-		if not cur_tags:
-			cur_tags = cur_ids
+	# No tags = include all tags
+	if not imp_tags:
+		imp_tags = imp_ids
+	if not cur_tags:
+		cur_tags = cur_ids
 
-		# Parsing event list
-		for row in event_reader:
-			next_row = False
-			event_time = conv_time(row)
-			if datetime > event_time: # Search for events that haven't passed.
-				for imp_tag in imp_tags:
-					for cur_tag in cur_tags:
-						if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):
-							event_list.append(row) # Might change to unique append
-							next_row = True
-							break
-					if next_row == True:
+	# Parsing event list
+	for row in event_calender:
+		next_row = False
+		event_time = conv_time(row)
+		if curr_time > event_time: # Search for events that haven't passed.
+			for imp_tag in imp_tags:
+				for cur_tag in cur_tags:
+					if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):
+						event_list.append(row) # Might change to unique append
+						next_row = True
 						break
-		return(event_list)
+				if next_row == True:
+					break
+
+	return(event_calender, event_list)
 
 # Compose JSON to send to Slack
 def compose_event_message(event_list, curr_time):

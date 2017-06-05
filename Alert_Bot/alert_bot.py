@@ -81,14 +81,16 @@ while True:
 			# List of commands
 			if command == '!parse':
 				print('Parsing list of upcoming events with the following tags: %s.' % command_tags)
-				event_list = info.event_parse(command_tags, now)
+				event_calender, event_list = info.event_parse(command_tags, now)
 				parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
-				msg, att = info.compose_event_message(event_list, now)
-				send_time = send_msg(parse_msg, att, info.chan, now)
+				~, att = info.compose_event_message(event_list, now)
+				~ = send_msg(parse_msg, att, info.chan, now)
+				event_calender, event_list = info.update_event_list(event_calender, command_tags, now)
+
 			elif command == '!events':
 				print('Sending upcoming event list.')
 				msg, att = info.compose_event_message(event_list, now)
-				send_time = send_msg(msg, att, info.chan, now)
+				~ = send_msg(msg, att, info.chan, now)
 
 			elif command == '!alert':
 				print('Sending log of recent latency alerts.')
