@@ -137,7 +137,7 @@ def conv_time(row):
 	event_time_format = ' '.join(row[0:3]).split()[1:4]
 	print(event_time_format)
 	if not row[1]:
-		event_time_format += ' 00:00 '
+		event_time_format += '00:00'
 	event_time_format += current_year
 	event_time = datetime.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
 	return(event_time)
