@@ -37,6 +37,7 @@ def send_msg(message, attachment, chan, now):
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message)
 	else:
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message, attachments=attachment)
+	print('Sending message...')
 
 	# Record the time that the message was sent
 	send_time = datetime.now()
@@ -44,15 +45,14 @@ def send_msg(message, attachment, chan, now):
 
 	# Wait until message interval passes (prevent spam)
 	time_into_minute = (send_time - now).seconds
-	if time_into_minute < 60: # Wait until next second
-		print('Waiting for ' + str(60 - time_into_minute) + ' seconds until next command.')
-		sleep(60 - time_into_minute)
-		print('Sending message...')
+	if time_into_minute < msg_interval: # Wait until next second
+		wait_time = msg_interval - time_into_minute
+		print('Waiting for ' + str(wait_time) + ' seconds until next command.')
+		sleep(wait_time)
 	return(send_time)
 
 # Some initializers
 event_list = []
-last_sent = datetime.strptime('Jan', '%b')
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
@@ -71,6 +71,7 @@ while True:
 	# Parse channel messages
 	rcvd_call = ['-1']
 	rcvd = sc_bot.rtm_read()
+
 	for call in rcvd:
 		if call['type'] == 'message':
 			rcvd_call = call['text'].split()
