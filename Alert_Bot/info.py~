@@ -51,7 +51,7 @@ def event_parse(msg_tags, datetime):
 		for row in event_reader:
 			next_row = False
 			event_time = conv_time(row)
-			if datetime < event_time: # Search for events that haven't passed.
+			if datetime > event_time: # Search for events that haven't passed.
 				for imp_tag in imp_tags:
 					for cur_tag in cur_tags:
 						if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):

@@ -27,7 +27,7 @@ cur_ind = 3
 # Time tag could be useful too. Especially with time zones.
 
 # Set of timers in minutes
-event_timers = [-5, 0, 5, 15, 30, 60, 120, 360, 720]
+event_timers = [0, 5, 15, 30, 60, 120, 360, 720]
 
 # Parse through the events CSV file
 def event_parse(msg_tags, datetime):
