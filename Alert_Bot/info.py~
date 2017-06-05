@@ -74,6 +74,7 @@ def event_parse(command_tags, curr_time):
 	# Parsing event list
 	for row in event_calender:
 		next_row = False
+		print(row)
 		event_time = conv_time(row)
 		if curr_time > event_time: # Search for events that haven't passed.
 			for imp_tag in imp_tags:

@@ -45,6 +45,7 @@ def get_cal():
 	print('Downloading calendar from {}'.format(csv_url))
 	r = requests.get(csv_url)
 	cal_csv = r.text.split('\n')
+	del(cal_csv[0])
 	return(cal_csv)
 
 # Event CSV Updater
