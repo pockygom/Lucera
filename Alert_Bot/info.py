@@ -53,7 +53,7 @@ def get_cal():
 
 # Event CSV Updater
 def update_event_list(event_calendar, command_tags, curr_time):
-	th = Timer(calender_update_timer, autoupdate_cal, [event_calender])
+	th = Timer(calender_update_timer, update_event_list, [event_calender])
 	th.start()
 	print('Event list refreshed')
 	event_calender, event_list = event_parse(command_tags, curr_time)
@@ -78,10 +78,9 @@ def event_parse(command_tags, curr_time):
 	# Parsing event list
 	for row in event_calender:
 		next_row = False
-		print(row)
 		if row[0]:
 			event_time = conv_time(row)
-			if curr_time > event_time: # Search for events that haven't passed.
+			if curr_time < event_time: # Search for events that haven't passed.
 				for imp_tag in imp_tags:
 					for cur_tag in cur_tags:
 						if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):
@@ -136,7 +135,6 @@ def event_alerts(event_list, curr_time):
 # Convert event times to datetime object
 def conv_time(row):
 	event_time_format = ' '.join(row[0:3]).split()[1:4]
-	print(event_time_format)
 	if not row[1]:
 		event_time_format += ['00:00']
 	event_time_format += current_year
