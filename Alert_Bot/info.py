@@ -9,7 +9,7 @@ from threading import Timer
 from datetime import datetime, timedelta, date
 
 # Calender update interval in seconds
-calender_update_timer = 30
+calender_update_timer = 1800 # Half hour
 
 # Current year
 current_year = [str(datetime.now().year)]
@@ -117,7 +117,6 @@ def compose_event_message(event_list, curr_time):
 				]
 			}
 			att.append(att_temp)
-			print(row)
 	return(msg, att)
 
 # Determine events to alert based off of timers
@@ -139,7 +138,7 @@ def event_alerts(event_list, curr_time):
 # Convert event times to datetime object
 def conv_time(row):
 	event_time_format = ' '.join(row[0:3]).split()[1:4]
-	if not row[1]:
+	if not row[1]: # When hours and minutes are missing
 		event_time_format += ['00:00']
 	event_time_format += current_year
 	event_time = datetime.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
