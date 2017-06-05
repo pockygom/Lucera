@@ -17,17 +17,14 @@ sc = SlackClient(token)
 
 # Slack Token for bot
 bot_token = os.environ.get('SLACK_BOT_TOKEN')
-print(bot_token)
 sc_bot = SlackClient(bot_token)
 
 # Connect to RTM
 while True:
 	print('Connecting...')
-	rtm = sc_bot.rtm_connect()
-	if rtm:
+	if sc_bot.rtm_connect():
 		print('Connected!')
 		break
-	print(rtm)
 
 msg_interval = 60 # Seconds
 
