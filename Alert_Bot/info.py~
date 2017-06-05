@@ -82,8 +82,7 @@ def event_parse(command_tags, curr_time):
 		next_row = False
 		if row[0]:
 			event_time = conv_time(row)
-			#if curr_time < event_time: # Search for events that haven't passed.
-			if True:
+			if curr_time < event_time: # Search for events that haven't passed.
 				for imp_tag in imp_tags:
 					for cur_tag in cur_tags:
 						if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):
