@@ -22,8 +22,7 @@ sc_bot = SlackClient(bot_token)
 # Connect to RTM
 while True:
 	print('Connecting...')
-	rtm = sc_bot.rtm_connect()
-	if rtm:
+	if sc_bot.rtm_connect():
 		print('Connected!')
 		break
 
