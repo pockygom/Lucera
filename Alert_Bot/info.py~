@@ -152,5 +152,6 @@ def conv_time(row):
 		event_time_string += ['00:00']
 		event_time_string += ['UTC']
 	event_time_string += current_year
+	print(event_time_string)
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
 	return(event_time.astimezone(eastern))

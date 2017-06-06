@@ -151,6 +151,8 @@ def conv_time(row):
 	if not row[1]: # When hours and minutes are missing
 		event_time_string += ['00:00']
 		event_time_string += ['UTC']
+	else:
+		True
 	event_time_string += current_year
 	print(event_time_string)
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
