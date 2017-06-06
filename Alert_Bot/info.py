@@ -149,5 +149,5 @@ def conv_time(row):
 		event_time_format += ['00:00']
 	event_time_format += current_year
 	event_time = datetime.strptime(' '.join(event_time_format), time_fmt)
-	print(event_time.timetz.strftime(time_fmt + ' %z')
+	print(event_time.timetz.strftime(time_fmt + ' %z'))
 	return(event_time)
