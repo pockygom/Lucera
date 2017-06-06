@@ -106,7 +106,7 @@ def compose_event_message(event_list, curr_time):
 	else:
 		msg = 'Upcoming Events!'
 		for row in event_list:
-			time_until = str(conv_time(row) - curr_time)
+			time_until = conv_time(row) - curr_time
 			if (time_until.days == 0) & (time_until.seconds == 0):
 				value_str = 'Event is happening now!'
 			else:
@@ -149,5 +149,5 @@ def conv_time(row):
 		event_time_format += ['00:00']
 	event_time_format += current_year
 	event_time = datetime.strptime(' '.join(event_time_format), time_fmt)
-	print(event_time.timetz.strftime(time_fmt + ' %z'))
+	print(event_time.strftime(time_fmt + ' %z'))
 	return(event_time)

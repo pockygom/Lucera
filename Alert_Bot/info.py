@@ -16,7 +16,7 @@ calender_update_timer = 1800 # Half hour
 current_year = [str(datetime.now().year)]
 
 # Time format
-time_fmt = '%b %d %H:%M %Y'
+time_fmt = '%b %d %H:%M %Y %Z'
 
 # Slack channel
 chan = 'lumefx-data-alerts'
@@ -106,7 +106,7 @@ def compose_event_message(event_list, curr_time):
 	else:
 		msg = 'Upcoming Events!'
 		for row in event_list:
-			time_until = str(conv_time(row) - curr_time)
+			time_until = conv_time(row) - curr_time
 			if (time_until.days == 0) & (time_until.seconds == 0):
 				value_str = 'Event is happening now!'
 			else:
@@ -146,8 +146,9 @@ def event_alerts(event_list, curr_time):
 def conv_time(row):
 	event_time_format = ' '.join(row[0:3]).split()[1:4]
 	if not row[1]: # When hours and minutes are missing
-		event_time_format += ['00:00']
-	event_time_format += current_year
+		event_time_string += ['00:00']
+	event_time_string += current_year
+	event_time_string += row[3]
 	event_time = datetime.strptime(' '.join(event_time_format), time_fmt)
-	print(event_time.strftime(time_fmt + ' %z'))
+	print(event_time.strftime(time_fmt))
 	return(event_time)
