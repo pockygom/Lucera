@@ -15,6 +15,9 @@ calender_update_timer = 1800 # Half hour
 # Current year
 current_year = [str(datetime.now().year)]
 
+# Time format
+time_fmt = '%b %d %H:%M %Y'
+
 # Slack channel
 chan = 'lumefx-data-alerts'
 
@@ -145,6 +148,6 @@ def conv_time(row):
 	if not row[1]: # When hours and minutes are missing
 		event_time_format += ['00:00']
 	event_time_format += current_year
-	event_time = datetime.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
-	print(event_time.timetz)
+	event_time = datetime.strptime(' '.join(event_time_format), time_fmt)
+	print(event_time.timetz.strftime(time_fmt + ' %z')
 	return(event_time)
