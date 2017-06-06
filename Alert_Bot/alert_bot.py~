@@ -97,7 +97,9 @@ while True:
 				print('Sending log of recent latency alerts.')
 				send_msg(msg, att, alert.chan, now)
 
+	sys.stdout.flush()
 	# Kill command
 	if rcvd_call == 'Kill Alert Bot!':
 		print('Killed')
+		sys.stdout.flush()
 		break

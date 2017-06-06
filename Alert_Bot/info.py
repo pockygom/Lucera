@@ -7,6 +7,7 @@ import csv
 import requests
 from threading import Timer
 from datetime import datetime, timedelta, date
+import pytz
 
 # Calender update interval in seconds
 calender_update_timer = 1800 # Half hour
@@ -100,9 +101,13 @@ def compose_event_message(event_list, curr_time):
 	if not event_list:
 		msg = 'No events available.'
 	else:
-		msg = 'Upcoming Events'
+		msg = 'Upcoming Events!'
 		for row in event_list:
 			time_until = str(conv_time(row) - curr_time)
+			if (time_until.days == 0) & (time_until.seconds == 0):
+				value_str = 'Event is happening now!'
+			else:
+				value_str = "Time until event: " + str(time_until)
 
 			# Attachment template for upcoming events
 			att_temp = {
@@ -111,7 +116,7 @@ def compose_event_message(event_list, curr_time):
 					"title": row[4],
 					"fields": [
 					{
-						"value": "Time until event: " + str(time_until)
+						"value": value_str 
 					}
 				]
 			}
@@ -140,5 +145,6 @@ def conv_time(row):
 	if not row[1]: # When hours and minutes are missing
 		event_time_format += ['00:00']
 	event_time_format += current_year
-	event_time = datetime.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
+	event_time = datetme.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
+	print(pytz.timezone(event_time))
 	return(event_time)
