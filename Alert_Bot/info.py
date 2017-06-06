@@ -151,8 +151,6 @@ def conv_time(row):
 	if not row[1]: # When hours and minutes are missing
 		event_time_string += ['00:00']
 		event_time_string += ['UTC']
-	else:
-		#event_time_string += ['UTC']
 	event_time_string += current_year
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
 	print(event_time.astimezone(eastern))

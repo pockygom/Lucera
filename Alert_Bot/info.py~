@@ -152,11 +152,8 @@ def conv_time(row):
 		event_time_string += ['00:00']
 		event_time_string += ['UTC']
 	else:
-		print(True)
 		#event_time_string += ['UTC']
 	event_time_string += current_year
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
 	print(event_time.astimezone(eastern))
 	return(event_time.astimezone(eastern))
-
-now = datetime.now(eastern)
