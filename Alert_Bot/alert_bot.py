@@ -9,6 +9,7 @@ import sys
 import os
 import info
 from datetime import datetime, timedelta
+import pytz
 from time import sleep
 
 # Slack Token for app
@@ -57,7 +58,7 @@ event_list = []
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
-	now = datetime.now()
+	now = datetime.now(info.eastern)
 	now = now - timedelta(seconds=now.second,
 		microseconds=now.microsecond)
 
