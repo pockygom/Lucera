@@ -145,6 +145,6 @@ def conv_time(row):
 	if not row[1]: # When hours and minutes are missing
 		event_time_format += ['00:00']
 	event_time_format += current_year
-	event_time = datetme.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
+	event_time = datetime.strptime(' '.join(event_time_format), '%b %d %H:%M %Y')
 	print(pytz.timezone(event_time))
 	return(event_time)
