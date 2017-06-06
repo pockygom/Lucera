@@ -144,7 +144,7 @@ def event_alerts(event_list, curr_time):
 
 # Convert event times to datetime object
 def conv_time(row):
-	event_time_string = ' '.join(row[0:3]).split()[:]
+	event_time_string = ' '.join(row[0:3]).split()[1:5]
 	if not row[1]: # When hours and minutes are missing
 		event_time_string += ['00:00']
 	event_time_string += current_year
