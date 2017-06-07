@@ -87,25 +87,25 @@ while True:
 
 			# Check the channel the message is from and use corresponding commands
 			#if call['channel'] == info.chan_enc:
-				if command == '!parse':
-					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
-					event_calender, event_list = info.event_parse(command_tags, now)
-					if not command_tags:
-						parse_msg = 'Parsing complete. Includes all events.' 
-					else:
-						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
-					_, att = info.compose_event_message(event_list, now)
-					_ = send_msg(parse_msg, att, info.chan, now)
-					event_calender, event_list = info.update_event_list(command_tags, now)
+			if command == '!parse':
+				print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
+				event_calender, event_list = info.event_parse(command_tags, now)
+				if not command_tags:
+					parse_msg = 'Parsing complete. Includes all events.' 
+				else:
+					parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
+				_, att = info.compose_event_message(event_list, now)
+				_ = send_msg(parse_msg, att, info.chan, now)
+				event_calender, event_list = info.update_event_list(command_tags, now)
 
-				elif command == '!events':
-					print('%s: Sending list of upcoming events.' % str(now))
-					msg, att = info.compose_event_message(event_list, now)
-					_ = send_msg(msg, att, info.chan, now)
+			elif command == '!events':
+				print('%s: Sending list of upcoming events.' % str(now))
+				msg, att = info.compose_event_message(event_list, now)
+				_ = send_msg(msg, att, info.chan, now)
 
 			#elif call['channel'] == lat_alert.chan_enc:
-				if command == '!alert':
-					print('%s: Sending log of recent latency alerts.' % str(now))
+			if command == '!alert':
+				print('%s: Sending log of recent latency alerts.' % str(now))
 
 			# Kill command
 			if call['text'] == 'Kill Alert Bot!':
