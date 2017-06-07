@@ -59,7 +59,7 @@ def send_msg(message, attachment, chan, now):
 
 # Some initializers
 event_list = []
-kill_switch = 0
+kill_switch = False
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
@@ -86,7 +86,7 @@ while True:
 			command_tags = rcvd_call[1:]
 
 			# Check the channel the message is from and use corresponding commands
-			if call['channel'] == info.chan_enc:
+			#if call['channel'] == info.chan_enc:
 				if command == '!parse':
 					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
 					event_calender, event_list = info.event_parse(command_tags, now)
@@ -103,14 +103,14 @@ while True:
 					msg, att = info.compose_event_message(event_list, now)
 					_ = send_msg(msg, att, info.chan, now)
 
-			if call['channel'] == lat_alert.chan_enc:
+			#elif call['channel'] == lat_alert.chan_enc:
 				if command == '!alert':
 					print('%s: Sending log of recent latency alerts.' % str(now))
 
 			# Kill command
 			if call['text'] == 'Kill Alert Bot!':
 				print('%s: Killed' % str(now))
-				kill_switch = 1
+				kill_switch = True
 				break
 
 	sys.stdout.flush()

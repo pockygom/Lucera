@@ -4,13 +4,17 @@
 # John Song
 # May 31 2017
 
+# Modules
 from slackclient import SlackClient
-import sys
-import os
-import info
+from time import sleep
 from datetime import datetime, timedelta
 import pytz
-from time import sleep
+import sys
+import os
+
+# Functionality files
+import info
+import latency_alert as lat_alert
 
 # Slack Token for app
 token = os.environ.get('SLACK_TOKEN')
@@ -55,7 +59,7 @@ def send_msg(message, attachment, chan, now):
 
 # Some initializers
 event_list = []
-kill_switch = 0
+kill_switch = False
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
@@ -99,14 +103,14 @@ while True:
 					msg, att = info.compose_event_message(event_list, now)
 					_ = send_msg(msg, att, info.chan, now)
 
-			if call['channel'] == alert.chan_enc:
+			elif call['channel'] == lat_alert.chan_enc:
 				if command == '!alert':
 					print('%s: Sending log of recent latency alerts.' % str(now))
 
 			# Kill command
 			if call['text'] == 'Kill Alert Bot!':
 				print('%s: Killed' % str(now))
-				kill_switch = 1
+				kill_switch = True
 				break
 
 	sys.stdout.flush()
