@@ -75,6 +75,7 @@ while True:
 	rcvd = sc_bot.rtm_read()
 
 	for call in rcvd:
+		print(call)
 		if call['type'] == 'message':
 			rcvd_call = call['text'].split()
 			print(rcvd_call)
