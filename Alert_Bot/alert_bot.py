@@ -108,7 +108,7 @@ while True:
 					print('%s: Sending log of recent latency alerts.' % str(now))
 
 			# Kill command
-			elif call['channel'] == 'D5M9ATXSQ' # Only pockygom can kill
+			elif call['channel'] == 'D5M9ATXSQ': # Only pockygom can kill
 				if call['text'] == 'Kill Alert Bot!':
 					print('%s: Killed' % str(now))
 					kill_switch = True
