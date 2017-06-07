@@ -6,5 +6,5 @@
 # Stuff to put
 
 chan = 'lumefx-data-alerts'
-chan_enc = 'xd'
+chan_enc = 'C5LEPDXUK'
 
