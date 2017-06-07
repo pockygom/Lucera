@@ -84,7 +84,7 @@ while True:
 
 			# List of commands
 			if command == '!parse':
-				print('%s: Parsing list of upcoming events with the following tags: %s.' % str(now), command_tags)
+				print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
 				event_calender, event_list = info.event_parse(command_tags, now)
 				if not command_tags:
 					parse_msg = 'Parsing complete. Includes all events.' 

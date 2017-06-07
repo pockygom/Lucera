@@ -105,6 +105,6 @@ while True:
 	sys.stdout.flush()
 	# Kill command
 	if rcvd_call == 'Kill Alert Bot!':
-		print('Killed')
+		print('%s: Killed' % str(now))
 		sys.stdout.flush()
 		break
