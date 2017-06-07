@@ -89,11 +89,11 @@ while True:
 			#if call['channel'] == info.chan_enc:
 			if command == '!parse':
 				print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
-				event_calender, event_list = info.event_parse(command_tags, now)
+				event_calender, event_list, output_tags = info.event_parse(command_tags, now)
 				if not command_tags:
 					parse_msg = 'Parsing complete. Includes all events.' 
 				else:
-					parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
+					parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
 				_, att = info.compose_event_message(event_list, now)
 				_ = send_msg(parse_msg, att, info.chan, now)
 				event_calender, event_list = info.update_event_list(command_tags, now)
@@ -104,7 +104,7 @@ while True:
 				_ = send_msg(msg, att, info.chan, now)
 
 			#elif call['channel'] == lat_alert.chan_enc:
-			if command == '!alert':
+			elif command == '!alert':
 				print('%s: Sending log of recent latency alerts.' % str(now))
 
 			# Kill command
@@ -112,6 +112,7 @@ while True:
 				print('%s: Killed' % str(now))
 				kill_switch = True
 				break
+		sys.stdout.flush()
 
 	sys.stdout.flush()
 
