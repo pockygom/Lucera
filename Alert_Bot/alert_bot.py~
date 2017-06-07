@@ -35,7 +35,15 @@ while True:
 msg_interval = 60 # Seconds
 
 # Function for sendng message/attachments
-def send_msg(message, attachment, chan, now):
+def send_msg(message, attachment, chan, now, last_sent):
+	# Wait until message interval passes (prevent spam)
+	time_since_last_msg = now - last_sent
+	if (time_since_last_msg.days == 0) & (time_since_last_msg.seconds < msg_interval): # Wait until next second
+		wait_time = msg_interval - time_since_last_msg.seconds
+		print('Waiting for ' + str(wait_time) + ' seconds until next command.')
+		sys.stdout.flush()
+		sleep(wait_time)
+
 	# Send message to Slack
 	if not isinstance(message,str):
 		message = 'Error: Message not a string'
@@ -48,14 +56,6 @@ def send_msg(message, attachment, chan, now):
 	# Record the time that the message was sent
 	send_time = info.eastern.localize(datetime.now())
 	send_time = send_time - timedelta(microseconds=now.microsecond)
-
-	# Wait until message interval passes (prevent spam)
-	time_into_minute = (send_time - now).seconds
-	if time_into_minute < msg_interval: # Wait until next second
-		wait_time = msg_interval - time_into_minute
-		print('Waiting for ' + str(wait_time) + ' seconds until next command.')
-		sys.stdout.flush()
-		sleep(wait_time)
 	return(send_time)
 
 # Some initializers
@@ -73,16 +73,16 @@ while True:
 		alert_list, event_list = info.event_alerts(event_list, now)
 		if alert_list:
 			msg, att = info.compose_event_message(alert_list, now)
-			send_time = send_msg(msg, att, info.chan, now)
+			send_time = send_msg(msg, att, info.chan, now, send_time)
 			print('%s: Alerts sent for %s!' % (str(datetime.now()), str(send_time)))
 
 	# Parse channel messages
 	rcvd_call = ['-1']
 	rcvd = sc_bot.rtm_read()
-	print(rcvd)
 	for call in rcvd:
 		if call['type'] == 'message':
-			print('%s: %s' % (str(datetime.now()), call))
+			if call['username'] != 'Alert/Info Bot':
+				print('%s: %s' % (str(datetime.now()), call))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
@@ -98,12 +98,12 @@ while True:
 					else:
 						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
 					_, att = info.compose_event_message(event_list, now)
-					_ = send_msg(parse_msg, att, info.chan, now)
+					send_time = send_msg(parse_msg, att, info.chan, now, send_time)
 
 				elif command == '!events':
 					print('%s: Sending list of upcoming events.' % str(datetime.now()))
 					msg, att = info.compose_event_message(event_list, now)
-					_ = send_msg(msg, att, info.chan, now)
+					send_time = send_msg(msg, att, info.chan, now, send_time)
 
 			elif call['channel'] == lat_alert.chan_enc:
 				if command == '!alert':
