@@ -81,6 +81,7 @@ def event_parse(command_tags, curr_time):
 	imp_tags = set(imp_ids).intersection(command_tags)
 	cur_tags = set(cur_ids).intersection(command_tags)
 	output_tags = list(imp_tags | cur_tags)
+	print(output_tags)
 
 	# No tags = include all tags
 	if not imp_tags:
