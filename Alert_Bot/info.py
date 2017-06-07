@@ -74,12 +74,13 @@ def update_event_list(command_tags, curr_time):
 def event_parse(command_tags, curr_time):
 	# Initialize
 	event_list = []
+	output_tags = []
 	event_calender = get_cal()
 
 	# Check for tags
 	imp_tags = set(imp_ids).intersection(command_tags)
 	cur_tags = set(cur_ids).intersection(command_tags)
-	output_tags = imp_tags | cur_tags
+	output_tags.addAll(imp_tags | cur_tags)
 
 	# No tags = include all tags
 	if not imp_tags:
@@ -102,7 +103,7 @@ def event_parse(command_tags, curr_time):
 					if next_row == True:
 						break
 
-	return(event_calender, event_list, output_tags[0])
+	return(event_calender, event_list, output_tags)
 
 # Compose JSON to send to Slack
 def compose_event_message(event_list, curr_time):
