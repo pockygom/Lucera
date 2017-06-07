@@ -38,9 +38,8 @@ msg_interval = 60 # Seconds
 # Function for sendng message/attachments
 def send_msg(message, attachment, chan, now, last_sent):
 	# Wait until message interval passes (prevent spam)
-	time_since_last_msg = now - last_sent
 	print(time_since_last_msg.seconds)
-	if (time_since_last_msg.days == 0) & (time_since_last_msg.seconds < msg_interval): # Wait until next second
+	if now == last_sent: # Wait until next second
 		wait_time = msg_interval - time_since_last_msg.seconds
 		print('Waiting for ' + str(wait_time) + ' seconds until sending message.')
 		th = Timer(wait_time, send_msg, [message, attachment, chan, now, last_sent])
@@ -58,20 +57,19 @@ def send_msg(message, attachment, chan, now, last_sent):
 
 	# Record the time that the message was sent
 	send_time = info.eastern.localize(datetime.now())
-	send_time = send_time - timedelta(microseconds=send_time.microsecond)
+	send_time = send_time - timedelta(seconds=now.second, microseconds=send_time.microsecond)
 	return(send_time)
 
 # Some initializers
 event_list = []
 send_time = info.eastern.localize(datetime.now())
-send_time = send_time - timedelta(microseconds=send_time.microsecond)
+send_time = send_time - timedelta(seconds=now.second, microseconds=send_time.microsecond)
 kill_switch = False
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
 	now = info.eastern.localize(datetime.now())
-	now = now - timedelta(seconds=now.second,
-		microseconds=now.microsecond)
+	now = now - timedelta(seconds=now.second, microseconds=now.microsecond)
 
 	# Event alerts
 	if event_list:

@@ -43,9 +43,7 @@ event_timers = [0, 5, 15, 30, 60, 120, 360, 720]
 # Event CSV url formatter
 def get_csv_url(date):
 	prev_sunday = date - timedelta(days=date.weekday() + 1 % 7)
-	return('https://www.dailyfx.com/files/Calendar-'
-		+ prev_sunday.strftime('%m-%d-%Y')
-		+ '.csv')
+	return('https://www.dailyfx.com/files/Calendar-' + prev_sunday.strftime('%m-%d-%Y') + '.csv')
 
 # Event CSV getter
 def get_cal():
