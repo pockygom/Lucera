@@ -2,7 +2,9 @@
 # Event tracker
 # John Song
 # May 31 2017
+
 # Creating a class is probably better...
+# Creating a list for event times is probably better too...
 
 import csv
 import requests
@@ -28,12 +30,12 @@ chan = 'lumefx-data-info'
 chan_enc = 'C5LJANRSQ'
 
 # Importance tag
-imp_ids = ['High', 'Medium', 'Low']
+imp_ids = ['high', 'medium', 'low']
 imp_ind = 5
-imp_colors = {'High': 'danger', 'Medium': 'warning', 'Low': '#FFDB99'}
+imp_colors = {'high': 'danger', 'medium': 'warning', 'low': '#FFDB99'}
 
 # Currency tag
-cur_ids = ['USD', 'EUR', 'JPY']
+cur_ids = ['usd', 'eur', 'jpy']
 cur_ind = 3
 
 # Time tag could be useful too. Especially with time zones.

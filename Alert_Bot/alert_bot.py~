@@ -80,11 +80,11 @@ while True:
 	rcvd = sc_bot.rtm_read()
 	for call in rcvd:
 		if call['type'] == 'message':
-			print('%s: %s' % (str(datetime.now()), call['text']))
+			print('%s: Received message: %s' % (str(datetime.now()), call['text']))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
-			command = rcvd_call[0]
-			command_tags = rcvd_call[1:]
+			command = rcvd_call[0].lower()
+			command_tags = rcvd_call[1:].lower()
 
 			# Check the channel the message is from and use corresponding commands
 			if call['channel'] == info.chan_enc:
