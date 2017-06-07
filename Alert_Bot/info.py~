@@ -24,7 +24,7 @@ time_fmt = '%b %d %H:%M %Z %Y'
 
 # Slack channel
 chan = 'lumefx-data-info'
-chan_enc = 'D5M9ATXSQ'
+chan_enc = 'C5LJANRSQ'
 
 # Importance tag
 imp_ids = ['High', 'Medium', 'Low']
