@@ -38,6 +38,7 @@ def send_msg(message, attachment, chan, now, last_sent):
 	if now == last_sent: # Wait until next minute
 		print('Sending messages too quickly.')
 		sleep(60)
+		return(last_sent)
 
 	# Send message to Slack
 	if not isinstance(message,str):
@@ -55,8 +56,9 @@ def send_msg(message, attachment, chan, now, last_sent):
 
 # Some initializers
 event_list = []
-send_time = info.eastern.localize(datetime.now())
+send_time = info.eastern.localize(datetime(year=1990))
 send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
+info_send_time = send_time
 kill_switch = False
 
 while True:
@@ -69,8 +71,8 @@ while True:
 		alert_list, event_list = info.event_alerts(event_list, now)
 		if alert_list:
 			msg, att = info.compose_event_message(alert_list, now)
-			send_time = send_msg(msg, att, info.chan, now, send_time)
-			print('%s: Alerts sent for %s!' % (str(datetime.now()), str(send_time)))
+			info_send_time = send_msg(msg, att, info.chan, now, info_send_time)
+			print('%s: Alerts sent for %s!' % (str(datetime.now()), str(info_send_time)))
 
 	# Parse channel messages
 	rcvd_call = ['-1']
@@ -93,12 +95,12 @@ while True:
 					else:
 						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
 					_, att = info.compose_event_message(event_list, now)
-					send_time = send_msg(parse_msg, att, info.chan, now, send_time)
+					info_send_time = send_msg(parse_msg, att, info.chan, now, info_send_time)
 
 				elif command == '!events':
 					print('%s: Sending list of upcoming events.' % str(datetime.now()))
 					msg, att = info.compose_event_message(event_list, now)
-					send_time = send_msg(msg, att, info.chan, now, send_time)
+					info_send_time = send_msg(msg, att, info.chan, now, info_send_time)
 
 			elif call['channel'] == lat_alert.chan_enc:
 				if command == '!alert':
