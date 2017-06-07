@@ -51,7 +51,7 @@ def get_cal():
 	event_calender = []
 	now = date.today()
 	csv_url = get_csv_url(now)
-	print('%s: Downloading calendar from %s' % str(now) csv_url)
+	print('%s: Downloading calendar from %s' % (str(now), csv_url))
 
 	# Formatting
 	r = requests.get(csv_url)
