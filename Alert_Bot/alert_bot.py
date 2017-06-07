@@ -83,8 +83,8 @@ while True:
 	rcvd = sc_bot.rtm_read()
 	for call in rcvd:
 		if call['type'] == 'message':
-			if call['username'] != 'Alert/Info Bot':
-				print('%s: %s' % (str(datetime.now()), call))
+#			if call['username'] != 'Alert/Info Bot':
+			print('%s: %s' % (str(datetime.now()), call))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
