@@ -74,7 +74,7 @@ while True:
 		if alert_list:
 			msg, att = info.compose_event_message(alert_list, now)
 			send_time = send_msg(msg, att, info.chan, now)
-			print('%s: Alerts sent for %s!' % (str(datetime.now()) str(send_time)))
+			print('%s: Alerts sent for %s!' % (str(datetime.now()), str(send_time)))
 
 	# Parse channel messages
 	rcvd_call = ['-1']
