@@ -43,7 +43,7 @@ def send_msg(message, attachment, chan, now):
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message)
 	else:
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message, attachments=attachment)
-	print('Sending message...')
+	print('%s: Sending message...' % str(now))
 
 	# Record the time that the message was sent
 	send_time = info.eastern.localize(datetime.now())
@@ -54,6 +54,7 @@ def send_msg(message, attachment, chan, now):
 	if time_into_minute < msg_interval: # Wait until next second
 		wait_time = msg_interval - time_into_minute
 		print('Waiting for ' + str(wait_time) + ' seconds until next command.')
+		sys.stdout.flush()
 		sleep(wait_time)
 	return(send_time)
 
@@ -94,7 +95,7 @@ while True:
 					if not command_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:
-						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % str(output_tags)
+						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
 					_, att = info.compose_event_message(event_list, now)
 					_ = send_msg(parse_msg, att, info.chan, now)
 
