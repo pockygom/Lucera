@@ -159,6 +159,7 @@ def conv_time(row):
 	event_time = utc.localize(event_time)
 	return(event_time.astimezone(eastern))
 
+# Calculate time until the event occurs
 def time_until_calc(row, curr_time):
 	loc_event_time = conv_time(row)
 	loc_time = eastern.localize(curr_time)
