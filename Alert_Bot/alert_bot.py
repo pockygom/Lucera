@@ -57,13 +57,13 @@ def send_msg(message, attachment, chan, now, last_sent):
 
 	# Record the time that the message was sent
 	send_time = info.eastern.localize(datetime.now())
-	send_time = send_time - timedelta(seconds=now.second, microseconds=send_time.microsecond)
+	send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
 	return(send_time)
 
 # Some initializers
 event_list = []
 send_time = info.eastern.localize(datetime.now())
-send_time = send_time - timedelta(seconds=now.second, microseconds=send_time.microsecond)
+send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
 kill_switch = False
 
 while True:
