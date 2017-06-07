@@ -23,7 +23,7 @@ utc = pytz.utc
 time_fmt = '%b %d %H:%M %Z %Y'
 
 # Slack channel
-chan = 'lumefx-data-alerts'
+chan = 'lumefx-data-info'
 
 # Importance tag
 imp_ids = ['High', 'Medium', 'Low']
