@@ -2,6 +2,7 @@
 # Event tracker
 # John Song
 # May 31 2017
+# Creating a class is probably better...
 
 import csv
 import requests
