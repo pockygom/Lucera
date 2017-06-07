@@ -81,6 +81,7 @@ while True:
 	for call in rcvd:
 		if call['type'] == 'message':
 			print('%s: %s' % (str(now), call))
+			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
 			command_tags = rcvd_call[1:]
@@ -89,14 +90,13 @@ while True:
 			if call['channel'] == info.chan_enc:
 				if command == '!parse':
 					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
-					event_calender, event_list, output_tags = info.event_parse(command_tags, now)
+					event_calender, event_list, output_tags = info.update_event_list(command_tags, now)
 					if not command_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:
 						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % str(output_tags)
 					_, att = info.compose_event_message(event_list, now)
 					_ = send_msg(parse_msg, att, info.chan, now)
-					event_calender, event_list = info.update_event_list(command_tags, now)
 
 				elif command == '!events':
 					print('%s: Sending list of upcoming events.' % str(now))
