@@ -58,7 +58,7 @@ event_list = []
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
-	now = datetime.now(info.eastern)
+	now = datetime.now()
 	now = now - timedelta(seconds=now.second,
 		microseconds=now.microsecond)
 

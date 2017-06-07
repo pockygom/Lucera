@@ -110,7 +110,7 @@ def compose_event_message(event_list, curr_time):
 	else:
 		msg = 'Upcoming Events!'
 		for row in event_list:
-			time_until = conv_time(row) - curr_time
+			time_until = time_until_calc(row, curr_time)
 			if (time_until.days == 0) & (time_until.seconds == 0):
 				value_str = 'Event is happening now!'
 			else:
@@ -135,7 +135,7 @@ def event_alerts(event_list, curr_time):
 	alert_list = []
 	event_del_queue = 0
 	for row in event_list:
-		time_until = conv_time(row) - curr_time
+		time_until = time_until_calc(row, curr_time)
 		for timers in event_timers:
 			if (time_until.days == 0) & (time_until.seconds/60 == timers):
 				alert_list.append(row)
@@ -148,7 +148,6 @@ def event_alerts(event_list, curr_time):
 
 # Convert event times to datetime object
 def conv_time(row):
-	print(row)
 	event_time_string = ' '.join(row[0:3]).split()[1:5]
 	if not row[1]: # When hours and minutes are missing
 		event_time_string += ['00:00']
@@ -160,4 +159,9 @@ def conv_time(row):
 	event_time = utc.localize(event_time)
 	return(event_time.astimezone(eastern))
 
-now = datetime.now(eastern)
+# Calculate time until the event occurs
+def time_until_calc(row, curr_time):
+	loc_event_time = conv_time(row)
+	loc_time = eastern.localize(curr_time)
+	time_until = loc_event_time - loc_time
+	return(time_until)
