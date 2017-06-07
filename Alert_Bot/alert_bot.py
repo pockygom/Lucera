@@ -56,7 +56,7 @@ def send_msg(message, attachment, chan, now, last_sent):
 
 # Some initializers
 event_list = []
-send_time = info.eastern.localize(datetime(year=1990, month=1))
+send_time = info.eastern.localize(datetime(1990,1,1,0,0))
 send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
 info_send_time = send_time
 kill_switch = False
