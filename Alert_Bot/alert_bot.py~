@@ -79,6 +79,7 @@ while True:
 	# Parse channel messages
 	rcvd_call = ['-1']
 	rcvd = sc_bot.rtm_read()
+	print(rcvd)
 	for call in rcvd:
 		if call['type'] == 'message':
 			print('%s: %s' % (str(datetime.now()), call))
