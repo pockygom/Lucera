@@ -90,7 +90,7 @@ while True:
 			if call['channel'] == info.chan_enc:
 				if command == '!parse':
 					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(datetime.now()), command_tags))
-					event_calender, event_list, output_tags = info.update_event_list(command_tags, now)
+					event_calender, event_list, output_tags, info_timer = info.update_event_list(command_tags, now)
 					if not command_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:

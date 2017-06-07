@@ -12,6 +12,10 @@ from threading import Timer
 from datetime import datetime, timedelta, date
 import pytz
 
+# Slack channel
+chan = 'lumefx-data-info'
+chan_enc = 'C5LJANRSQ'
+
 # Calender update interval in seconds
 calender_update_timer = 1800 # Half hour
 
@@ -25,20 +29,10 @@ utc = pytz.utc
 # Time format
 time_fmt = '%b %d %H:%M %Z %Y'
 
-# Slack channel
-chan = 'lumefx-data-info'
-chan_enc = 'C5LJANRSQ'
-
 # Importance tag
 imp_ids = ['high', 'medium', 'low']
 imp_ind = 5
 imp_colors = {'High': 'danger', 'Medium': 'warning', 'Low': '#FFDB99'}
-
-# Currency tag
-cur_ids = ['usd', 'eur', 'jpy']
-cur_ind = 3
-
-# Time tag could be useful too. Especially with time zones.
 
 # Set of timers in minutes
 event_timers = [0, 5, 15, 30, 60, 120, 360, 720]
@@ -65,11 +59,11 @@ def get_cal():
 
 # Event CSV Updater
 def update_event_list(command_tags, curr_time):
-	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
-	th.start()
+	cal_timer = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
+	cal_timer.start()
 	print('%s: Event list refreshed.' % str(datetime.now()))
 	event_calender, event_list, output_tags = event_parse(command_tags, curr_time)
-	return(event_calender, event_list, output_tags)
+	return(event_calender, event_list, output_tags, cal_timer)
 
 # Parse through the events CSV file
 def event_parse(command_tags, curr_time):
@@ -79,14 +73,11 @@ def event_parse(command_tags, curr_time):
 
 	# Check for tags
 	imp_tags = set(imp_ids).intersection(command_tags)
-	cur_tags = set(cur_ids).intersection(command_tags)
-	output_tags = list(imp_tags | cur_tags)
+	output_tags = list(imp_tags)
 
 	# No tags = include all tags
 	if not imp_tags:
 		imp_tags = imp_ids
-	if not cur_tags:
-		cur_tags = cur_ids
 
 	# Parsing event list
 	for row in event_calender:
@@ -95,14 +86,10 @@ def event_parse(command_tags, curr_time):
 			event_time = conv_time(row)
 			if curr_time < event_time: # Search for events that haven't passed.
 				for imp_tag in imp_tags:
-					#for cur_tag in cur_tags:
-						#if (row[imp_ind].lower() == imp_tag) & (row[cur_ind].lower() == cur_tag):
 					if (row[imp_ind].lower() == imp_tag):
 						event_list.append(row) # Might change to unique append
 						next_row = True
 						break
-					#if next_row == True:
-						#break
 
 	return(event_calender, event_list, output_tags)
 

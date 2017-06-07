@@ -12,8 +12,12 @@ from threading import Timer
 from datetime import datetime, timedelta, date
 import pytz
 
+# Slack channel
+chan = 'lumefx-data-info'
+chan_enc = 'C5LJANRSQ'
+
 # Calender update interval in seconds
-calender_update_timer = 1800 # Half hour
+calender_update_timer = 60 # Half hour
 
 # Current year
 current_year = [str(datetime.now().year)]
@@ -25,16 +29,10 @@ utc = pytz.utc
 # Time format
 time_fmt = '%b %d %H:%M %Z %Y'
 
-# Slack channel
-chan = 'lumefx-data-info'
-chan_enc = 'C5LJANRSQ'
-
 # Importance tag
 imp_ids = ['high', 'medium', 'low']
 imp_ind = 5
 imp_colors = {'High': 'danger', 'Medium': 'warning', 'Low': '#FFDB99'}
-
-# Time tag could be useful too. Especially with time zones.
 
 # Set of timers in minutes
 event_timers = [0, 5, 15, 30, 60, 120, 360, 720]
@@ -61,11 +59,11 @@ def get_cal():
 
 # Event CSV Updater
 def update_event_list(command_tags, curr_time):
-	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
-	th.start()
+	cal_timer = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
+	cal_timer.start()
 	print('%s: Event list refreshed.' % str(datetime.now()))
 	event_calender, event_list, output_tags = event_parse(command_tags, curr_time)
-	return(event_calender, event_list, output_tags)
+	return(event_calender, event_list, output_tags, cal_timer)
 
 # Parse through the events CSV file
 def event_parse(command_tags, curr_time):
