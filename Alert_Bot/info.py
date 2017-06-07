@@ -67,7 +67,7 @@ def update_event_list(command_tags, curr_time):
 	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
 	th.start()
 	print('%s: Event list refreshed' % str(curr_time))
-	event_calender, event_list = event_parse(command_tags, curr_time)
+	event_calender, event_list, _ = event_parse(command_tags, curr_time)
 	return(event_calender, event_list)
 
 # Parse through the events CSV file
@@ -102,7 +102,7 @@ def event_parse(command_tags, curr_time):
 					if next_row == True:
 						break
 
-	return(event_calender, event_list, output_tags)
+	return(event_calender, event_list, output_tags[0])
 
 # Compose JSON to send to Slack
 def compose_event_message(event_list, curr_time):

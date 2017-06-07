@@ -93,7 +93,7 @@ while True:
 					if not command_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:
-						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
+						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % str(output_tags)
 					_, att = info.compose_event_message(event_list, now)
 					_ = send_msg(parse_msg, att, info.chan, now)
 					event_calender, event_list = info.update_event_list(command_tags, now)
