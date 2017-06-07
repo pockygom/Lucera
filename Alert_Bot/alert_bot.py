@@ -39,6 +39,7 @@ msg_interval = 60 # Seconds
 def send_msg(message, attachment, chan, now, last_sent):
 	# Wait until message interval passes (prevent spam)
 	time_since_last_msg = now - last_sent
+	print(time_since_last_msg.seconds)
 	if (time_since_last_msg.days == 0) & (time_since_last_msg.seconds < msg_interval): # Wait until next second
 		wait_time = msg_interval - time_since_last_msg.seconds
 		print('Waiting for ' + str(wait_time) + ' seconds until sending message.')
