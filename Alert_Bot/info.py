@@ -24,6 +24,7 @@ time_fmt = '%b %d %H:%M %Z %Y'
 
 # Slack channel
 chan = 'lumefx-data-info'
+chan_enc = 'D5M9ATXSQ'
 
 # Importance tag
 imp_ids = ['High', 'Medium', 'Low']
@@ -51,7 +52,7 @@ def get_cal():
 	event_calender = []
 	now = date.today()
 	csv_url = get_csv_url(now)
-	print('%s: Downloading calendar from %s' % (str(now), csv_url))
+	print('Downloading calendar from %s' % csv_url)
 
 	# Formatting
 	r = requests.get(csv_url)

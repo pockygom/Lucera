@@ -55,6 +55,7 @@ def send_msg(message, attachment, chan, now):
 
 # Some initializers
 event_list = []
+kill_switch = 0
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
@@ -73,38 +74,41 @@ while True:
 	# Parse channel messages
 	rcvd_call = ['-1']
 	rcvd = sc_bot.rtm_read()
-
 	for call in rcvd:
-		print(call)
 		if call['type'] == 'message':
+			print(call)
 			rcvd_call = call['text'].split()
-			print(rcvd_call)
 			command = rcvd_call[0]
 			command_tags = rcvd_call[1:]
 
-			# List of commands
-			if command == '!parse':
-				print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
-				event_calender, event_list = info.event_parse(command_tags, now)
-				if not command_tags:
-					parse_msg = 'Parsing complete. Includes all events.' 
-				else:
-					parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
-				_, att = info.compose_event_message(event_list, now)
-				_ = send_msg(parse_msg, att, info.chan, now)
-				event_calender, event_list = info.update_event_list(command_tags, now)
+			# Check the channel the message is from and use corresponding commands
+			if call['channel'] == info.chan_enc:
+				if command == '!parse':
+					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
+					event_calender, event_list = info.event_parse(command_tags, now)
+					if not command_tags:
+						parse_msg = 'Parsing complete. Includes all events.' 
+					else:
+						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % command_tags
+					_, att = info.compose_event_message(event_list, now)
+					_ = send_msg(parse_msg, att, info.chan, now)
+					event_calender, event_list = info.update_event_list(command_tags, now)
 
-			elif command == '!events':
-				print('%s: Sending list of upcoming events.' % str(now))
-				msg, att = info.compose_event_message(event_list, now)
-				_ = send_msg(msg, att, info.chan, now)
+				elif command == '!events':
+					print('%s: Sending list of upcoming events.' % str(now))
+					msg, att = info.compose_event_message(event_list, now)
+					_ = send_msg(msg, att, info.chan, now)
 
-			elif command == '!alert':
-				print('%s: Sending log of recent latency alerts.' % str(now))
+			if call['channel'] == alert.chan_enc:
+				if command == '!alert':
+					print('%s: Sending log of recent latency alerts.' % str(now))
+
+			# Kill command
+			if call['text'] == 'Kill Alert Bot!':
+				print('%s: Killed' % str(now))
+				kill_switch = 1
+				break
 
 	sys.stdout.flush()
-	# Kill command
-	if rcvd_call == 'Kill Alert Bot!':
-		print('%s: Killed' % str(now))
-		sys.stdout.flush()
+	if kill_switch:
 		break
