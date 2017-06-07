@@ -84,7 +84,7 @@ while True:
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0].lower()
-			command_tags = [command_tag.lower() for command tag in rcvd_call[1:]]
+			command_tags = [command_tag.lower() for command_tag in rcvd_call[1:]]
 
 			# Check the channel the message is from and use corresponding commands
 			if call['channel'] == info.chan_enc:
