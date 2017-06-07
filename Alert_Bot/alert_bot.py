@@ -36,7 +36,7 @@ while True:
 def send_msg(message, attachment, chan, now, last_sent):
 	# Wait until message interval passes (prevent spam)
 	if now == last_sent: # Wait until next minute
-		print('Sending messages too quickly.')
+		print('%s: Sending messages too quickly.' % str(datetime.now()))
 		return(last_sent)
 
 	# Send message to Slack
@@ -80,7 +80,7 @@ while True:
 	rcvd = sc_bot.rtm_read()
 	for call in rcvd:
 		if call['type'] == 'message':
-			print('%s: %s' % (str(datetime.now()), call))
+			print('%s: %s' % (str(datetime.now()), call['text']))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
