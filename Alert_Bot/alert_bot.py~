@@ -107,13 +107,13 @@ while True:
 			if command == '!alert':
 				print('%s: Sending log of recent latency alerts.' % str(now))
 
-			sys.stdout.flush()
-
 			# Kill command
 			if call['text'] == 'Kill Alert Bot!':
 				print('%s: Killed' % str(now))
 				kill_switch = True
 				break
+
+		sys.stdout.flush()
 
 	if kill_switch:
 		sys.stdout.flush()
