@@ -44,7 +44,7 @@ def send_msg(message, attachment, chan, now, last_sent):
 		print('Waiting for ' + str(wait_time) + ' seconds until sending message.')
 		th = Timer(wait_time, send_msg, [message, attachment, chan, now, last_sent])
 		th.start()
-		return(None)
+		return(send_time)
 
 	# Send message to Slack
 	if not isinstance(message,str):
