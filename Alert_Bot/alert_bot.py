@@ -37,7 +37,6 @@ def send_msg(message, attachment, chan, now, last_sent):
 	# Wait until message interval passes (prevent spam)
 	if now == last_sent: # Wait until next minute
 		print('Sending messages too quickly.')
-		sleep(60)
 		return(last_sent)
 
 	# Send message to Slack
@@ -115,6 +114,7 @@ while True:
 					kill_switch = True
 					break
 
+	# Print outputs to file
 		sys.stdout.flush()
 	sys.stdout.flush()
 
