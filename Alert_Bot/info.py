@@ -81,7 +81,6 @@ def event_parse(command_tags, curr_time):
 	imp_tags = set(imp_ids).intersection(command_tags)
 	cur_tags = set(cur_ids).intersection(command_tags)
 	output_tags = list(imp_tags | cur_tags)
-	print(output_tags)
 
 	# No tags = include all tags
 	if not imp_tags:
@@ -96,6 +95,7 @@ def event_parse(command_tags, curr_time):
 			event_time = conv_time(row)
 			if curr_time < event_time: # Search for events that haven't passed.
 				for imp_tag in imp_tags:
+					print(imp_tag)
 					for cur_tag in cur_tags:
 						if (row[imp_ind] == imp_tag) & (row[cur_ind] == cur_tag):
 							event_list.append(row) # Might change to unique append
