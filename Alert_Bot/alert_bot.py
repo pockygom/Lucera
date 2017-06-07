@@ -77,6 +77,7 @@ while True:
 	for call in rcvd:
 		if call['type'] == 'message':
 			rcvd_call = call['text'].split()
+			print(rcvd_call)
 			command = rcvd_call[0]
 			command_tags = rcvd_call[1:]
 

@@ -42,7 +42,7 @@ def send_msg(message, attachment, chan, now):
 	print('Sending message...')
 
 	# Record the time that the message was sent
-	send_time = datetime.now()
+	send_time = info.eastern.localize(datetime.now())
 	send_time = send_time - timedelta(microseconds=now.microsecond)
 
 	# Wait until message interval passes (prevent spam)
