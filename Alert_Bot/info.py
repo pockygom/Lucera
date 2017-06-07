@@ -34,10 +34,6 @@ imp_ids = ['high', 'medium', 'low']
 imp_ind = 5
 imp_colors = {'High': 'danger', 'Medium': 'warning', 'Low': '#FFDB99'}
 
-# Currency tag
-cur_ids = ['usd', 'eur', 'jpy']
-cur_ind = 3
-
 # Time tag could be useful too. Especially with time zones.
 
 # Set of timers in minutes
@@ -79,14 +75,11 @@ def event_parse(command_tags, curr_time):
 
 	# Check for tags
 	imp_tags = set(imp_ids).intersection(command_tags)
-	cur_tags = set(cur_ids).intersection(command_tags)
-	output_tags = list(imp_tags | cur_tags)
+	output_tags = list(imp_tags)
 
 	# No tags = include all tags
 	if not imp_tags:
 		imp_tags = imp_ids
-	if not cur_tags:
-		cur_tags = cur_ids
 
 	# Parsing event list
 	for row in event_calender:
@@ -95,14 +88,10 @@ def event_parse(command_tags, curr_time):
 			event_time = conv_time(row)
 			if curr_time < event_time: # Search for events that haven't passed.
 				for imp_tag in imp_tags:
-					#for cur_tag in cur_tags:
-						#if (row[imp_ind].lower() == imp_tag) & (row[cur_ind].lower() == cur_tag):
 					if (row[imp_ind].lower() == imp_tag):
 						event_list.append(row) # Might change to unique append
 						next_row = True
 						break
-					#if next_row == True:
-						#break
 
 	return(event_calender, event_list, output_tags)
 
