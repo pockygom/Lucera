@@ -55,6 +55,7 @@ def send_msg(message, attachment, chan, now):
 
 # Some initializers
 event_list = []
+kill_switch = 0
 
 while True:
 	# Current time (MM/DD/YYYY HH:mm)
@@ -109,3 +110,5 @@ while True:
 				break
 
 	sys.stdout.flush()
+	if kill_switch:
+		break

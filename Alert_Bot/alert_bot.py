@@ -4,13 +4,17 @@
 # John Song
 # May 31 2017
 
+# Modules
 from slackclient import SlackClient
-import sys
-import os
-import info
+from time import sleep
 from datetime import datetime, timedelta
 import pytz
-from time import sleep
+import sys
+import os
+
+# Functionality files
+import info
+import latency_alert as lat_alert
 
 # Slack Token for app
 token = os.environ.get('SLACK_TOKEN')
@@ -99,7 +103,7 @@ while True:
 					msg, att = info.compose_event_message(event_list, now)
 					_ = send_msg(msg, att, info.chan, now)
 
-			if call['channel'] == alert.chan_enc:
+			if call['channel'] == lat_alert.chan_enc:
 				if command == '!alert':
 					print('%s: Sending log of recent latency alerts.' % str(now))
 
