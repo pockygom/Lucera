@@ -113,6 +113,8 @@ while True:
 				kill_switch = True
 				break
 
-	sys.stdout.flush()
+			sys.stdout.flush()
+
 	if kill_switch:
+		sys.stdout.flush()
 		break
