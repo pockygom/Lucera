@@ -6,6 +6,7 @@
 
 # Modules
 from slackclient import SlackClient
+from threading import Timer
 from time import sleep
 from datetime import datetime, timedelta
 import pytz
@@ -40,9 +41,10 @@ def send_msg(message, attachment, chan, now, last_sent):
 	time_since_last_msg = now - last_sent
 	if (time_since_last_msg.days == 0) & (time_since_last_msg.seconds < msg_interval): # Wait until next second
 		wait_time = msg_interval - time_since_last_msg.seconds
-		print('Waiting for ' + str(wait_time) + ' seconds until next command.')
-		sys.stdout.flush()
-		sleep(wait_time)
+		print('Waiting for ' + str(wait_time) + ' seconds until sending message.')
+		th = Timer(wait_time, send_msg, [message, attachment, chan, now, last_sent])
+		th.start()
+		return(None)
 
 	# Send message to Slack
 	if not isinstance(message,str):
@@ -83,7 +85,6 @@ while True:
 	rcvd = sc_bot.rtm_read()
 	for call in rcvd:
 		if call['type'] == 'message':
-#			if call['username'] != 'Alert/Info Bot':
 			print('%s: %s' % (str(datetime.now()), call))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()

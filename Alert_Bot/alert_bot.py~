@@ -40,7 +40,7 @@ def send_msg(message, attachment, chan, now, last_sent):
 	time_since_last_msg = now - last_sent
 	if (time_since_last_msg.days == 0) & (time_since_last_msg.seconds < msg_interval): # Wait until next second
 		wait_time = msg_interval - time_since_last_msg.seconds
-		print('Waiting for ' + str(wait_time) + ' seconds until next command.')
+		print('Waiting for ' + str(wait_time) + ' seconds until sending message.')
 		sys.stdout.flush()
 		sleep(wait_time)
 
@@ -83,8 +83,7 @@ while True:
 	rcvd = sc_bot.rtm_read()
 	for call in rcvd:
 		if call['type'] == 'message':
-			if call['username'] != 'Alert/Info Bot':
-				print('%s: %s' % (str(datetime.now()), call))
+			print('%s: %s' % (str(datetime.now()), call))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
