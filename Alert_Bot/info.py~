@@ -17,7 +17,7 @@ chan = 'lumefx-data-info'
 chan_enc = 'C5LJANRSQ'
 
 # Calender update interval in seconds
-calender_update_timer = 1800 # Half hour
+calender_update_timer = 60 # Half hour
 
 # Current year
 current_year = [str(datetime.now().year)]
