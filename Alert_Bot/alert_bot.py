@@ -43,7 +43,7 @@ def send_msg(message, attachment, chan, now):
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message)
 	else:
 		sc.api_call('chat.postMessage', asuser=True, channel=chan, text=message, attachments=attachment)
-	print('%s: Sending message...' % str(now))
+	print('%s: Sending message...' % str(datetime.now()))
 
 	# Record the time that the message was sent
 	send_time = info.eastern.localize(datetime.now())
@@ -74,14 +74,15 @@ while True:
 		if alert_list:
 			msg, att = info.compose_event_message(alert_list, now)
 			send_time = send_msg(msg, att, info.chan, now)
-			print('%s: Alerts sent!' % str(send_time))
+			print('%s: Alerts sent for %s!' % (str(datetime.now()) str(send_time)))
 
 	# Parse channel messages
 	rcvd_call = ['-1']
 	rcvd = sc_bot.rtm_read()
+	print(rcvd)
 	for call in rcvd:
 		if call['type'] == 'message':
-			print('%s: %s' % (str(now), call))
+			print('%s: %s' % (str(datetime.now()), call))
 			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0]
@@ -90,7 +91,7 @@ while True:
 			# Check the channel the message is from and use corresponding commands
 			if call['channel'] == info.chan_enc:
 				if command == '!parse':
-					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(now), command_tags))
+					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(datetime.now()), command_tags))
 					event_calender, event_list, output_tags = info.update_event_list(command_tags, now)
 					if not command_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
@@ -100,18 +101,18 @@ while True:
 					_ = send_msg(parse_msg, att, info.chan, now)
 
 				elif command == '!events':
-					print('%s: Sending list of upcoming events.' % str(now))
+					print('%s: Sending list of upcoming events.' % str(datetime.now()))
 					msg, att = info.compose_event_message(event_list, now)
 					_ = send_msg(msg, att, info.chan, now)
 
 			elif call['channel'] == lat_alert.chan_enc:
 				if command == '!alert':
-					print('%s: Sending log of recent latency alerts.' % str(now))
+					print('%s: Sending log of recent latency alerts.' % str(datetime.now()))
 
 			# Kill command
 			elif call['channel'] == 'D5M9ATXSQ': # Only pockygom can kill
 				if call['text'] == 'Kill Alert Bot!':
-					print('%s: Killed' % str(now))
+					print('%s: Killed' % str(datetime.now()))
 					kill_switch = True
 					break
 

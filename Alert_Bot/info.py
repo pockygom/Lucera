@@ -66,7 +66,7 @@ def get_cal():
 def update_event_list(command_tags, curr_time):
 	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
 	th.start()
-	print('%s: Event list refreshed' % str(curr_time))
+	print('%s: Event list refreshed' % str(datetime.now()))
 	event_calender, event_list, output_tags = event_parse(command_tags, curr_time)
 	return(event_calender, event_list, output_tags)
 
