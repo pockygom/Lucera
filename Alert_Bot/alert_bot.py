@@ -68,7 +68,7 @@ while True:
 		if alert_list:
 			msg, att = info.compose_event_message(alert_list, now)
 			send_time = send_msg(msg, att, info.chan, now)
-			print('Alert sent at %s' % str(send_time))
+			print('%s: Alerts sent!' % str(send_time))
 
 	# Parse channel messages
 	rcvd_call = ['-1']
@@ -84,7 +84,7 @@ while True:
 
 			# List of commands
 			if command == '!parse':
-				print('Parsing list of upcoming events with the following tags: %s.' % command_tags)
+				print('%s: Parsing list of upcoming events with the following tags: %s.' % str(now), command_tags)
 				event_calender, event_list = info.event_parse(command_tags, now)
 				if not command_tags:
 					parse_msg = 'Parsing complete. Includes all events.' 
@@ -95,17 +95,16 @@ while True:
 				event_calender, event_list = info.update_event_list(command_tags, now)
 
 			elif command == '!events':
-				print('Sending list of upcoming events.')
+				print('%s: Sending list of upcoming events.' % str(now))
 				msg, att = info.compose_event_message(event_list, now)
 				_ = send_msg(msg, att, info.chan, now)
 
 			elif command == '!alert':
-				print('Sending log of recent latency alerts.')
-				send_msg(msg, att, alert.chan, now)
+				print('%s: Sending log of recent latency alerts.' % str(now))
 
 	sys.stdout.flush()
 	# Kill command
 	if rcvd_call == 'Kill Alert Bot!':
-		print('Killed')
+		print('%s: Killed' % str(now))
 		sys.stdout.flush()
 		break

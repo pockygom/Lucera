@@ -51,7 +51,7 @@ def get_cal():
 	event_calender = []
 	now = date.today()
 	csv_url = get_csv_url(now)
-	print('Downloading calendar from {}'.format(csv_url))
+	print('%s: Downloading calendar from %s' % str(now), csv_url)
 
 	# Formatting
 	r = requests.get(csv_url)
@@ -65,7 +65,7 @@ def get_cal():
 def update_event_list(command_tags, curr_time):
 	th = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
 	th.start()
-	print('Event list refreshed')
+	print('%s: Event list refreshed' % str(curr_time))
 	event_calender, event_list = event_parse(command_tags, curr_time)
 	return(event_calender, event_list)
 
