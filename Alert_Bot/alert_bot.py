@@ -116,7 +116,7 @@ while True:
 					event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time, user=True)
 				
 				elif command == '!timers':
-					print('%s: Adding timers to the list of timers: %s' % (str(datetime.now()), command_tags)
+					print('%s: Adding timers to the list of timers: %s' % (str(datetime.now()), command_tags))
 					for tag in command_tags:
 						if isinstance(tag, int):
 							if tag not in event_timer:
