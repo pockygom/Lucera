@@ -4,7 +4,7 @@
 # May 31 2017
 
 import sys
-import urllib.request as urllibs
+import urllib2 as urllibs
 import ast
 from threading import Timer
 from datetime import datetime, timedelta
