@@ -94,7 +94,10 @@ while True:
 			print('%s: Received message: %s' % (str(datetime.now()), call['text']))
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0].lower()
-			command_tags = [command_tag.lower() for command_tag in rcvd_call[1:]]
+			if rcvd_call[1]:
+				command_tags = [command_tag.lower() for command_tag in rcvd_call[1:]]
+			else:
+				command_tags = ['-1']
 
 			# Check the channel the message is from and use corresponding commands
 			if call['channel'] == event.chan_enc:
