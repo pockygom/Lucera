@@ -92,7 +92,6 @@ while True:
 	for call in rcvd:
 		if call['type'] == 'message':
 			print('%s: Received message: %s' % (str(datetime.now()), call['text']))
-			sys.stdout.flush()
 			rcvd_call = call['text'].split()
 			command = rcvd_call[0].lower()
 			command_tags = [command_tag.lower() for command_tag in rcvd_call[1:]]
@@ -133,10 +132,10 @@ while True:
 
 			elif call['channel'] == alert.chan_enc:
 				if command == '!startalert':
-					if alert_timer:
-						alert_timer.cancel()
+					if alert_thread:
+						alert_thread.cancel()
 					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
-					alert_msg, alert_att = alert.update_list(command_tags)
+					alert_msg, alert_att, alert_thread = alert.update_list(command_tags)
 				
 				elif command == '!help':
 					print('%s: Printing list of commands for latency alerts.' % str(datetime.now()))
@@ -148,6 +147,10 @@ while True:
 				if call['text'] == 'Kill Alert Bot!':
 					print('%s: Killed' % str(datetime.now()))
 					kill_switch = True
+					if alert_thread:
+						alert_thread.cancel()
+					if event_thread:
+						event_thread.cancel()
 					break
 
 	# Print outputs to file
