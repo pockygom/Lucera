@@ -93,7 +93,7 @@ def event_parse(command_tags, curr_time):
 	return(event_calender, event_list, output_tags)
 
 # Compose JSON to send to Slack
-def compose_event_message(event_list, curr_time):
+def compose_message(event_list, curr_time):
 	att = []
 	if not event_list:
 		msg = 'No events available.'
