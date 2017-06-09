@@ -3,9 +3,7 @@
 # John Song
 # May 31 2017
 
-# Stuff to put
-
-import urllib.request
+import urllib2 as urllibs
 import ast
 from threading import Timer
 from datetime import datetime, timedelta
@@ -16,7 +14,7 @@ chan_enc = 'C5LEPDXUK'
 
 # API URL
 url = 'http://10.1.23.19:8085/summary'
-url_req = urllib.request.Request(url)
+url_req = urllibs.Request(url)
 
 # Data update interval in seconds
 data_update_timer = 34
@@ -32,7 +30,7 @@ colors = {'#FFDB99', 'warning', 'danger'}
 # Receive and parse data
 def get_data():
 	# Open url
-	data_obj = urllib.request.urlopen(url_req)
+	data_obj = urllibs.urlopen(url_req)
 	print('Downloading calender from %s. ' % url)
 
 	data = []
