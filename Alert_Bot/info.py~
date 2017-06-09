@@ -22,7 +22,7 @@ calender_update_timer = 1800 # Half hour
 # Current year
 current_year = [str(datetime.now().year)]
 
-# Time zone
+# Time zones
 eastern = pytz.timezone('US/Eastern')
 utc = pytz.utc
 
@@ -34,19 +34,15 @@ imp_ids = ['high', 'medium', 'low']
 imp_ind = 5
 imp_colors = {'High': 'danger', 'Medium': 'warning', 'Low': '#FFDB99'}
 
-# Set of timers in minutes
-event_timers = [0, 5, 15, 30, 60, 120, 360, 720]
-
-# Event CSV url formatter
-def get_csv_url(date):
-	prev_sunday = date - timedelta(days=date.weekday() + 1 % 7)
-	return('https://www.dailyfx.com/files/Calendar-' + prev_sunday.strftime('%m-%d-%Y') + '.csv')
-
 # Event CSV getter
 def get_cal():
+	# Initialize
 	event_calender = []
+
+	# Get url for the csv
 	now = date.today()
-	csv_url = get_csv_url(now)
+	prev_sunday = now - timedelta(days=now.weekday() + 1 % 7)
+	csv_url = 'https://www.dailyfx.com/files/Calendar-' + prev_sunday.strftime('%m-%d-%Y') + '.csv'
 	print('Downloading calendar from %s.' % csv_url)
 
 	# Formatting
@@ -59,10 +55,13 @@ def get_cal():
 
 # Event CSV Updater
 def update_event_list(command_tags, curr_time):
-	cal_timer = Timer(calender_update_timer, update_event_list, [command_tags, curr_time]) # Timer every calender_update_timer seconds
-	cal_timer.start()
-	print('%s: Event list refreshed.' % str(datetime.now()))
+	# Generate calender, list and output_tags
 	event_calender, event_list, output_tags = event_parse(command_tags, curr_time)
+	print('%s: Event list refreshed.' % str(datetime.now()))
+
+	# Start new timer to repeat
+	cal_timer = Timer(calender_update_timer, update_event_list, [command_tags, curr_time])
+	cal_timer.start()
 	return(event_calender, event_list, output_tags, cal_timer)
 
 # Parse through the events CSV file
@@ -122,9 +121,12 @@ def compose_event_message(event_list, curr_time):
 	return(msg, att)
 
 # Determine events to alert based off of timers
-def event_alerts(event_list, curr_time):
+def event_alerts(event_list, event_timers, curr_time):
+	# Initialize
 	alert_list = []
 	event_del_queue = 0
+	
+	# Check timers to see if any have been triggered
 	for row in event_list:
 		time_until = conv_time(row) - curr_time
 		for timers in event_timers:
@@ -133,19 +135,36 @@ def event_alerts(event_list, curr_time):
 				if timers == event_timers[0]:
 					event_del_queue += 1
 				break
+
+	# Remove any events that have occurred (Timer = 0 triggered)
 	for _ in range(event_del_queue):
 		del(event_list[0])
 	return(alert_list, event_list)
 
 # Convert event times to datetime object
 def conv_time(row):
+	# Format event time
 	event_time_string = ' '.join(row[0:3]).split()[1:5]
 	if not row[1]: # When hours and minutes are missing
 		event_time_string += ['00:00']
 		event_time_string += ['UTC']
 	event_time_string += current_year
 
-	# Convert to object
+	# Convert to datetime object
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
 	event_time = utc.localize(event_time)
 	return(event_time.astimezone(eastern))
+
+# Send message consisting of a list of valid commands
+def command_list():
+	att = []
+	msg = 'Valid commands for event alerts include:\n
+!parse <importance tags>:\n
+	Importance tags include High, Medium, and Low. Case insensitive.\n
+	Parses the event list containing the included importance tag. If no tag is given, all events are included.\n
+!events:\n
+	Send a message consisting of the entire event list.\n
+!timers: <time in minutes>:\n
+	Adds a timer to the timer list. Once the time until an event coincides with a timer in this list, Alert Bot wil send an alert. \n'
+	return(msg, att)
+

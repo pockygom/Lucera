@@ -69,7 +69,7 @@ def update_data(last_ref, delta_thresh):
 	
 	# Check if updatse are new and extract relevant information
 	if last_ref != ref_time:
-		print('%s: Market data refreshed for %s.' % (str(datetime.now()), ref_time)
+		print('%s: Market data refreshed for %s.' % (str(datetime.now()), ref_time))
 		for database_key in database_keys:
 			for update in data[database_key]:
 				if update[delta_key]:
@@ -165,7 +165,7 @@ def compose_message(delta_list_additions, delta_list_subtractions delta_dbs_list
 				{
 					'title': 'Additions'
 					'value': add_str
-				}
+				},
 				{
 					'title': 'Subtractions'
 					'value': sub_str
@@ -173,4 +173,11 @@ def compose_message(delta_list_additions, delta_list_subtractions delta_dbs_list
 			]
 		}
 		att.append(att_temp)
+	return(msg, att)
+
+def command_list():
+	att = []
+	msg = 'Valid commands for latency alerts include:\n
+!startalert <latency threshold in seconds>:\n
+	Initiates the latency alert functionality. Checks if any of the latencies exceed a given threshold and sends a message when it does.'
 	return(msg, att)
