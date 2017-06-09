@@ -86,7 +86,7 @@ def update_data(last_ref, delta_thresh):
 						delta_list.append(delta_data_string)
 	return(delta_list, ref_time)
 
-def update_list(delta_thresh, delta_list=[], last_ref='-1'):
+def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Initialize
 	delta_dbs_list = []
 
