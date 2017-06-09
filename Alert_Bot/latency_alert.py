@@ -3,6 +3,7 @@
 # John Song
 # May 31 2017
 
+import sys
 import urllib2 as urllibs
 import ast
 from threading import Timer
@@ -103,6 +104,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		delta_list_additions = []
 	else: # If they are new determine additions and subtractions from the lists
 		print('%s: Determining additions and subtractions from the market data.' % str(datetime.now()))
+		sys.stdout.flush()
 		delta_list_additions = set(delta_list).difference(past_delta_list)
 		delta_list_subtractions = set(past_delta_list).difference(delta_list)
 		for addition in delta_list_additions:
