@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Alert/Info Bot v0.0
+# Alert/Info Bot v0.1
 # Probably better to implement using a class
 # John Song
 # May 31 2017
