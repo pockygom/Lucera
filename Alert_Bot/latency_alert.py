@@ -86,7 +86,7 @@ def update_data(last_ref, delta_thresh):
 						delta_list.append(delta_data_string)
 	return(delta_list, ref_time)
 
-def update_list(delta_thresh, past_delta_list=['-1'], last_ref='-1'):
+def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Initialize
 	delta_dbs_list = []
 
@@ -98,6 +98,7 @@ def update_list(delta_thresh, past_delta_list=['-1'], last_ref='-1'):
 		delta_list = past_delta_list
 		delta_list_additions = []
 	else: # If they are new determine additions and subtractions from the lists
+		print('%s: Determining additions and subtractions from the market data.' % str(datetime.now()))
 		delta_list_additions = set(delta_list).difference(past_delta_list)
 		delta_list_subtractions = set(past_delta_list).difference(delta_list)
 		for addition in delta_list_additions:

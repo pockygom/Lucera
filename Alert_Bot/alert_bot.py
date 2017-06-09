@@ -136,7 +136,7 @@ while True:
 						alert_thread.cancel()
 					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
 					alert_msg, alert_att, alert_thread = alert.update_list(command_tags)
-				
+
 				elif command == '!help':
 					print('%s: Printing list of commands for latency alerts.' % str(datetime.now()))
 					alert_msg, alert_att = alert.command_list()
