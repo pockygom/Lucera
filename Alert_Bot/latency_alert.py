@@ -105,13 +105,13 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 				delta_dbs_list.append(addition.split()[0])
 
 	# Start new timer to repeat list updating
-	dat_timer = Timer(data_update_timer, update_list, [delta_list, delta_thresh, ref_time])
-	dat_timer.start()
+	alert_thread = Timer(data_update_timer, update_list, [delta_list, delta_thresh, ref_time])
+	alert_thread.start()
 
 	# Create a message if there are new additions
 	if delta_list_additions & delta_list_subtractions:
 		msg, att = compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list)
-	return(msg, att)
+	return(msg, att, alert_thread)
 
 def conv_delta_time(delta_string):
 	# Check if string is valid then convert the delta time into a timedelta object

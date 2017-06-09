@@ -60,9 +60,9 @@ def update_event_list(command_tags, curr_time):
 	print('%s: Event list refreshed.' % str(datetime.now()))
 
 	# Start new timer to repeat
-	cal_timer = Timer(calender_update_timer, update_event_list, [command_tags, curr_time])
-	cal_timer.start()
-	return(event_calender, event_list, output_tags, cal_timer)
+	event_thread = Timer(calender_update_timer, update_event_list, [command_tags, curr_time])
+	event_thread.start()
+	return(event_calender, event_list, output_tags, event_thread)
 
 # Parse through the events CSV file
 def event_parse(command_tags, curr_time):
