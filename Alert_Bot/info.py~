@@ -17,7 +17,7 @@ chan = 'lumefx-data-info'
 chan_enc = 'C5LJANRSQ'
 
 # Calender update interval in seconds
-calender_update_timer = 60 # Half hour
+calender_update_timer = 1800 # Half hour
 
 # Current year
 current_year = [str(datetime.now().year)]
@@ -105,16 +105,16 @@ def compose_event_message(event_list, curr_time):
 			if (time_until.days == 0) & (time_until.seconds == 0):
 				value_str = 'Event is happening now!'
 			else:
-				value_str = "Time until event: " + str(time_until)
+				value_str = 'Time until event: ' + str(time_until)
 
 			# Attachment template for upcoming events
 			att_temp = {
-					"color": imp_colors[row[imp_ind]],
-					"author_name": ' '.join(row[0:3]),
-					"title": row[4],
-					"fields": [
+					'color': imp_colors[row[imp_ind]],
+					'author_name': ' '.join(row[0:3]),
+					'title': row[4],
+					'fields': [
 					{
-						"value": value_str 
+						'value': value_str 
 					}
 				]
 			}

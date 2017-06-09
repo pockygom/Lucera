@@ -59,6 +59,7 @@ send_time = info.eastern.localize(datetime(1990,1,1,0,0))
 send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
 info_send_time = send_time
 info_timer = []
+alert_timer = []
 kill_switch = False
 
 while True:
@@ -69,12 +70,15 @@ while True:
 	# Event alerts
 	if info_send_time != now:
 		if event_list:
-			alert_list, event_list = info.event_alerts(event_list, now)
-			if alert_list:
-				msg, att = info.compose_event_message(alert_list, now)
-				info_send_time = send_msg(msg, att, info.chan, now, info_send_time)
+			event_alert_list, event_list = info.event_alerts(event_list, now)
+			if event_alert_list:
+				info_msg, info_att = info.compose_event_message(event_alert_list, now)
+				info_send_time = send_msg(info_msg, info_att, info.chan, now, info_send_time)
 				print('%s: Alerts sent for %s!' % (str(datetime.now()), str(info_send_time)))
-			
+
+	if alert_msg:
+		alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
+		alert_msg = []
 
 	# Parse channel messages
 	rcvd_call = ['-1']
@@ -94,21 +98,24 @@ while True:
 						info_timer.cancel()
 					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(datetime.now()), command_tags))
 					event_calender, event_list, output_tags, info_timer = info.update_event_list(command_tags, now)
-					if not command_tags:
+					if not output_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:
 						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
-					_, att = info.compose_event_message(event_list, now)
-					info_send_time = send_msg(parse_msg, att, info.chan, now, info_send_time)
+					_, info_att = info.compose_event_message(event_list, now)
+					info_send_time = send_msg(parse_msg, info_att, info.chan, now, info_send_time)
 
 				elif command == '!events':
 					print('%s: Sending list of upcoming events.' % str(datetime.now()))
-					msg, att = info.compose_event_message(event_list, now)
-					info_send_time = send_msg(msg, att, info.chan, now, info_send_time)
+					info_msg, info_att = info.compose_event_message(event_list, now)
+					info_send_time = send_msg(info_msg, info_att, info.chan, now, info_send_time)
 
 			elif call['channel'] == lat_alert.chan_enc:
-				if command == '!alert':
-					print('%s: Sending log of recent latency alerts.' % str(datetime.now()))
+				if command == '!startalert':
+					if alert_timer:
+						alert_timer.cancel()
+					print('%s: Initiating logs of latency alerts.' % str(datetime.now()))
+					alert_msg, alert_att = lat_alert.update_list(command_tags)
 
 			# Kill command
 			elif call['channel'] == 'D5M9ATXSQ': # Only pockygom can kill

@@ -5,6 +5,101 @@
 
 # Stuff to put
 
+import urllib.request
+import ast
+from threading import Timer
+from datetime import datetime, timedelta
+
+# Slack Channel
 chan = 'lumefx-data-alerts'
-chan_enc = 'xd'
+chan_enc = 'C5LEPDXUK'
+
+# API URL
+url = 'http://10.1.23.19:8085/summary'
+url_req = urllib.request.Request(url)
+
+# Data update interval in seconds
+data_update_timer = 67
+
+# Relevant data keys ('ref', 'partition', 'ts', 'delta')
+delta_key = ['delta']
+label_keys = ['partition', 'ts']
+ref_key = 'ref'
+
+# Receive and parse data
+def get_data():
+	# Open url
+	data_obj = urllib.request.urlopen(url_req)
+	print('Downloading calender from %s. ' % url)
+
+	data = []
+	for line in data_obj:
+		new_line = line.decode('utf-8')
+		new_line = new_line.replace('null', '[]')
+		new_line = new_line.replace('\n', '')
+		data.append(new_line)
+		if new_line == '  } ]':
+			del(data_obj)
+			break
+
+	if data:
+		data = ' '.join(data)
+		data = ' '.join(data.split()) + ' }'
+		data = ast.literal_eval(data)
+	return(data)
+
+def parse_data(last_ref, delta_thresh):
+	database_keys = []
+	delta_data = {}
+
+	data = get_data()
+	for key in data:
+		database_keys.append(key)
+
+	ref_time = data[database_keys[0]][0][ref_key]
+	if last_ref != ref_time:
+		print('%s: Data refreshed.' % str(datetime.now()))
+		for database_key in database_keys:
+			for update in data[database_key]:
+				delta_string = update[delta_key]
+				delta_time = conv_delta_time(delta_string)
+
+				# Check if delta is above the threshold and record the update
+				if delta_time:
+					if (delta_time.seconds > delta_thresh) & (delta_time.days == 0):
+						for key in label_keys:
+							if key not in delta_data.keys():
+								delta_data[key] = [update[key]]
+							else:
+								delta_data[key].append(update[key]
+
+	return(delta_data, ref_time)
+
+def update_data(last_ref, delta_thresh):
+	delta_data, last_ref = parse_data(last_ref, delta_thresh)
+	dat_timer = Timer(data_update_timer, update_data, [last_ref])
+	dat_timer.start()
+	return(delta_data, last_ref)
+
+def conv_delta_time(delta_string):
+	if delta_string:
+		delta_string = delta_string.split()
+		if len(delta_string) == 1:
+			delta_string.insert(0, '0')
+		else:
+			del(delta_string[1])
+		delta_array = list(map(int, ' '.join(' '.join(delta_string).split(':')).split()))
+		delta_time = timedelta(days = delta_array[0], hours = delta_array[1], minutes = delta_array[2], seconds = delta_array[3])
+	else:
+		delta_time = []
+	return(delta_time)
+
+def add_data(delta_data, delta_string, delta_time):
+)
+	return(delta_data)
+
+last_ref = '-1'
+delta_data, last_ref = update_data(last_ref)
+
+
 
