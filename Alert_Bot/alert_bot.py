@@ -60,6 +60,7 @@ send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_ti
 info_send_time = send_time
 info_timer = []
 alert_timer = []
+alert_msg = []
 kill_switch = False
 
 while True:
@@ -74,10 +75,11 @@ while True:
 			if event_alert_list:
 				info_msg, info_att = info.compose_event_message(event_alert_list, now)
 				info_send_time = send_msg(info_msg, info_att, info.chan, now, info_send_time)
-				print('%s: Alerts sent for %s!' % (str(datetime.now()), str(info_send_time)))
+				print('%s: Event alerts sent for %s!' % (str(datetime.now()), str(info_send_time)))
 
 	if alert_msg:
 		alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
+		print('%s: Latency alerts sent for %s!' % (str(datetime.now()), str(info_send_time)))
 		alert_msg = []
 
 	# Parse channel messages
@@ -114,7 +116,7 @@ while True:
 				if command == '!startalert':
 					if alert_timer:
 						alert_timer.cancel()
-					print('%s: Initiating logs of latency alerts.' % str(datetime.now()))
+					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
 					alert_msg, alert_att = lat_alert.update_list(command_tags)
 
 			# Kill command
