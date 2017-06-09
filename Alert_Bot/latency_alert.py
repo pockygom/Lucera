@@ -4,7 +4,7 @@
 # May 31 2017
 
 import sys
-import urllib2 as urllibs
+import requests
 import ast
 from threading import Timer
 from datetime import datetime, timedelta
@@ -15,7 +15,6 @@ chan_enc = 'C5LEPDXUK'
 
 # API URL
 url = 'http://10.1.23.19:8085/summary'
-url_req = urllibs.Request(url)
 
 # Data update interval in seconds
 data_update_timer = 34
@@ -31,7 +30,7 @@ colors = ['#FFDB99', 'warning', 'danger']
 # Receive and convert data
 def get_data():
 	# Open url
-	data_obj = urllibs.urlopen(url_req)
+	data_obj = requests.get(url)
 
 	# Format data
 	data = []
@@ -40,6 +39,7 @@ def get_data():
 		new_line = new_line.replace('null', '[]')
 		new_line = new_line.replace('\n', '')
 		data.append(new_line)
+		print(new_line)
 		if new_line == '  } ]': # Last line of the url
 			del(data_obj)
 			break
@@ -67,6 +67,7 @@ def update_data(last_ref, delta_thresh):
 
 	# Determine the update time for the market data
 	ref_time = data[database_keys[0]][0][ref_key]
+	print(ref_time)
 	
 	# Check if updatse are new and extract relevant information
 	if last_ref != ref_time:
@@ -187,3 +188,5 @@ def command_list():
 	att = []
 	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency threshold alert. Defaults to 30 minutes.\n	Checks if any of the latencies exceed a given threshold and sends a message when it does.'
 	return(msg, att)
+
+update_list([])
