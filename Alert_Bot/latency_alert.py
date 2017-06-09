@@ -163,11 +163,11 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 				'author_name': dbs,
 				'fields': [
 				{
-					'title': 'Additions'
+					'title': 'Additions',
 					'value': add_str
 				},
 				{
-					'title': 'Subtractions'
+					'title': 'Subtractions',
 					'value': sub_str
 				}
 			]
