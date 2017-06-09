@@ -127,7 +127,7 @@ def conv_delta_time(delta_string):
 		delta_time = []
 	return(delta_time)
 
-def compose_message(delta_list_additions, delta_list_subtractions delta_dbs_list):
+def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list):
 	# Initialize
 	att = []
 	msg = 'Latency Alerts!'

@@ -76,7 +76,7 @@ while True:
 		if event_list:
 			event_alert_list, event_list = event.event_alerts(event_list, now)
 			if event_alert_list:
-				event_msg, event_att = event.compose_event_message(event_alert_list, now)
+				event_msg, event_att = event.compose_message(event_alert_list, now)
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
 				print('%s: Event alerts sent for %s!' % (str(datetime.now()), str(event_send_time)))
 
@@ -107,12 +107,12 @@ while True:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:
 						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
-					_, event_att = event.compose_event_message(event_list, now)
+					_, event_att = event.compose_message(event_list, now)
 					event_send_time = send_msg(parse_msg, event_att, event.chan, now, event_send_time, user=True)
 
 				elif command == '!events':
 					print('%s: Sending list of upcoming events.' % str(datetime.now()))
-					event_msg, event_att = event.compose_event_message(event_list, now)
+					event_msg, event_att = event.compose_message(event_list, now)
 					event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time, user=True)
 				
 				elif command == '!timers':
@@ -122,6 +122,7 @@ while True:
 							if tag not in event_timer:
 								event_timer.append(tags)
 					event_msg = 'The current timer list includes: %s (in minutes)' % event_timer
+					event_att = []
 					event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time, user=True)
 
 				elif command == '!help':
