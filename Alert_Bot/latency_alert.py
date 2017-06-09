@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Latency Alerts v0.0
+# Latency Alerts v0.1
 # John Song
 # May 31 2017
 
