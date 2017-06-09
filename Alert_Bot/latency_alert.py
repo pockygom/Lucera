@@ -90,6 +90,10 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Initialize
 	delta_dbs_list = []
 
+	# Check if delta_thresh is an int
+	if not isinstance(delta_thresh, int):
+		delta_thresh = 1800
+
 	# Update list
 	delta_list, ref_time = update_data(last_ref, delta_thresh)
 
@@ -106,7 +110,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 				delta_dbs_list.append(addition.split()[0])
 
 	# Start new timer to repeat list updating
-	alert_thread = Timer(data_update_timer, update_list, [delta_list, delta_thresh, ref_time])
+	alert_thread = Timer(data_update_timer, update_list, [delta_thresh, delta_list, ref_time])
 	alert_thread.start()
 
 	# Create a message if there are new additions
