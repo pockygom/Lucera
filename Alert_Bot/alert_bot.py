@@ -61,7 +61,7 @@ send_time = event.eastern.localize(datetime(1990,1,1,0,0))
 send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
 event_send_time = send_time
 event_thread = []
-event_timers
+event_timers = []
 alert_thread = []
 alert_msg = []
 kill_switch = False
