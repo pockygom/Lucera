@@ -14,7 +14,7 @@ import sys
 import os
 
 # Functionality files
-import event
+import info as event
 import latency_alert as alert
 
 # Slack Token for app
