@@ -177,7 +177,5 @@ def compose_message(delta_list_additions, delta_list_subtractions delta_dbs_list
 
 def command_list():
 	att = []
-	msg = 'Valid commands for latency alerts include:\n
-!startalert <latency threshold in seconds>:\n
-	Initiates the latency alert functionality. Checks if any of the latencies exceed a given threshold and sends a message when it does.'
+	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency alert functionality. Checks if any of the latencies exceed a given threshold and sends a message when it does.'
 	return(msg, att)
