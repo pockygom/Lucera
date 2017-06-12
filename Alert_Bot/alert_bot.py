@@ -130,8 +130,9 @@ while True:
 							is_int = False
 						if is_int:
 							new_timer = int(tag)
-							if new_timer not in event_timers:
-								event_timers.append(new_timer)
+							if new_timer > 0:
+								if new_timer not in event_timers:
+									event_timers.append(new_timer)
 					event_msg = 'The current timer list includes: %s (in minutes)' % event_timers
 					print('%s: The current list of timers: %s' % (str(datetime.now()), str(event_timers)))
 					event_att = []
