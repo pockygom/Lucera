@@ -103,6 +103,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	if ref_time == last_ref:
 		delta_list = past_delta_list
 		delta_list_additions = []
+		delta_list_subtractions = []
 	else: # If they are new determine additions and subtractions from the lists
 		print('%s: Determining additions and subtractions from the market data.' % str(datetime.now()))
 		delta_list_additions = set(delta_list).difference(past_delta_list)
@@ -118,6 +119,9 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Create a message if there are new additions
 	if delta_list_additions | delta_list_subtractions:
 		msg, att = compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list)
+	else:
+		msg = []
+		att = []
 	return(msg, att, alert_thread)
 
 def conv_delta_time(delta_string):

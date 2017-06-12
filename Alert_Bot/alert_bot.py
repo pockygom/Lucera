@@ -75,7 +75,7 @@ while True:
 	# Event alerts
 	if event_send_time != now:
 		if event_list:
-			event_alert_list, event_list = event.event_alerts(event_list, now)
+			event_alert_list, event_list = event.event_alerts(event_list, event_timers, now)
 			if event_alert_list:
 				event_msg, event_att = event.compose_message(event_alert_list, now)
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
