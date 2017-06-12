@@ -6,10 +6,7 @@
 
 # Modules
 from slackclient import SlackClient
-from threading import Timer
-from time import sleep
 from datetime import datetime, timedelta
-import pytz
 import sys
 import os
 

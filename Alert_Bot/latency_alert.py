@@ -6,7 +6,7 @@
 import sys
 import requests
 import ast
-from threading import Timer
+from threading import Timer, _Timer
 from datetime import datetime, timedelta
 
 # Slack Channel
@@ -121,7 +121,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 				delta_dbs_list.append(addition.split()[0])
 
 	# Start new timer to repeat list updating
-	alert_thread = Timer(data_update_timer, update_list, [delta_thresh, delta_list, ref_time])
+	alert_thread = CustomTimer(data_update_timer, update_list, [delta_thresh, delta_list, ref_time])
 	alert_thread.start()
 
 	# Create a message if there are new additions
@@ -227,11 +227,18 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 		att.append(att_temp)
 	return(msg, att)
 
-def compose_list_message(delta_list, delta_dbs_list):
-	# Initialize
-	att = []
-	msg = 'List of market data awaiting updates...'
-	
+class CustomTimer(_Timer):
+	def __init__(self, interval, function, args=[], kwargs={}):
+		self._original_function = function
+		super(CustomTimer, self).__init__(
+		interval, self._do_execute, args, kwargs)
+
+	def _do_execute(self, *a, **kw):
+		self.result = self._original_function(*a, **kw)
+
+	def join(self):
+		super(CustomTimer, self).join()
+		return self.result
 
 def command_list():
 	att = []
