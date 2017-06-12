@@ -89,6 +89,8 @@ while True:
 				print('%s: Sending latency alerts for %s!' % (str(datetime.now()), str(alert_send_time)))
 				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
 				alert_msg = []
+			else:
+				alert_send_time = now
 
 	# Parse channel messages
 	rcvd_call = ['-1']
