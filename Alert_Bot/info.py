@@ -158,6 +158,6 @@ def conv_time(row):
 # Send message consisting of a list of valid commands
 def command_list():
 	att = []
-	msg = 'Valid commands for event alerts include:\n!parse <importance tags>:\n	Importance tags include High, Medium, and Low. Case insensitive.\n	Parses the event list containing the included importance tag.\n	If no tag is given, all events are included.\n!events:\n	Send a message consisting of the entire event list.\n!timers <time in minutes>:\n	Adds a timer to the timer list and prints the timer list.\n	Once the time until an event coincides with a timer in this list, Alert Bot wil send an alert.'
+	msg = 'Valid commands for event alerts include:\n!parse <importance tags>:\n	Importance tags include High, Medium, and Low. Case insensitive. Color coded.\n	Parses the event list containing the included importance tag.\n	If no tag is given, all events are included.\n!events:\n	Send a message consisting of the entire event list.\n!timers <time in minutes>:\n	Adds a timer to the timer list and prints the timer list.\n	Once the time until an event coincides with a timer in this list, Alert Bot wil send an alert.'
 	return(msg, att)
 

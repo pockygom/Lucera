@@ -135,7 +135,14 @@ while True:
 					if alert_thread:
 						alert_thread.cancel()
 					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
-					alert_msg, alert_att, alert_thread = alert.update_list(command_tags)
+					alert_msg, alert_att, alert_thread, alert_delta_list = alert.update_list(command_tags)
+
+				elif command == '!alertlist':
+					if alert_delta_list:
+						print('%s: Sending list of market data awaiting updates.' % str(datetime.now()))
+						alert_msg, alert_att = alert.compose_message([], [], [], alert_delta_list, user=True)
+						alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time, user=True)
+						alert_msg = []
 
 				elif command == '!help':
 					print('%s: Printing list of commands for latency alerts.' % str(datetime.now()))

@@ -118,11 +118,11 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 
 	# Create a message if there are new additions
 	if delta_list_additions | delta_list_subtractions:
-		msg, att = compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list)
+		msg, att = compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list, [])
 	else:
 		msg = []
 		att = []
-	return(msg, att, alert_thread)
+	return(msg, att, alert_thread, delta_list)
 
 def conv_delta_time(delta_string):
 	# Check if string is valid then convert the delta time into a timedelta object
@@ -138,23 +138,58 @@ def conv_delta_time(delta_string):
 		delta_time = []
 	return(delta_time)
 
-def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list):
+def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list, delta_list, user=False):
 	# Initialize
 	att = []
 	msg = 'Latency Alerts!'
 
 	# Create an attachment for each database consisting of the additions and subtractions to the list
 	for dbs in delta_dbs_list:
-		add_str = ''
-		sub_str = ''
-
-		# Construct field string for list additions
 		i = 0
-		for delta in delta_list_additions:
-			if delta.split()[0] == dbs:
-				add_str += ' '.join(delta.split()[1:]) + '\n'
-				i += 1
+		if not user:
+			# Construct field string for list additions
+			add_str = ''
+			for delta in delta_list_additions:
+				delta_split = delta.split()
+				if delta_split[0] == dbs:
+					add_str += ' '.join(delta_split[1:]) + '\n'
+					i += 1
 		
+			# Construct field string for list subtractions
+			sub_str = ''
+			for delta in delta_list_subtractions:
+				delta_split = delta.split()
+				if delta_split[0] == dbs:
+					sub_str += ' '.join(delta_split[1:]) + '\n'
+					i -= 1
+
+			field = [ 
+				{
+					'title': 'Additions to the list of market data awaiting updates:',
+					'value': add_str
+				},
+				{
+					'title': 'Updated market data:',
+					'value': sub_str
+				}
+			]
+
+		else:
+			# Construct field string for list additions
+			event_str = ''
+			for delta in delta_list:
+				delta_split = delta.split()
+				if delta_split[0] == dbs:
+					event_str += ' '.join(delta_split[1:]) + '\n'
+					i += 1
+
+			field = [
+				{
+					'title': 'List of market data awaiting updates:',
+					'value': event_str
+				}
+			]
+
 		# Color code for how many additions were detected for a given database
 		if i < 5:
 			color_code = colors[0]
@@ -163,30 +198,22 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 		else:
 			color_code = colors[2]
 
-		# Construct field string for list subtractions
-		for delta in delta_list_subtractions:
-			if delta.split()[0] == dbs:
-				sub_str += ' '.join(delta.split()[1:]) + '\n'
-
 		# Attachment template for latency alerts for each database
 		att_temp = {
 				'color': color_code,
 				'author_name': dbs,
-				'fields': [
-				{
-					'title': 'Additions',
-					'value': add_str
-				},
-				{
-					'title': 'Subtractions',
-					'value': sub_str
-				}
-			]
+				'fields': field
 		}
 		att.append(att_temp)
 	return(msg, att)
 
+def compose_list_message(delta_list, delta_dbs_list):
+	# Initialize
+	att = []
+	msg = 'List of market data awaiting updates...'
+	
+
 def command_list():
 	att = []
-	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency threshold alert. Defaults to 30 minutes.\n	Checks if any of the latencies exceed a given threshold and sends a message when it does.'
+	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency threshold alert. Defaults to 30 minutes.\n	Checks if the latency for any market update exceeds a given threshold and sends a message when it does.\n	Stores a list of market data waiting to be updated.\n	When an item in the list is updated, Alert Bot sends a message.\n	Color represents how severe the latency is for the given database.'
 	return(msg, att)
