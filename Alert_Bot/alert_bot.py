@@ -59,6 +59,7 @@ send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_ti
 event_send_time = send_time
 alert_send_time = send_time
 event_timers = [0]
+event_tags = []
 alert_delta_list = []
 alert_msg = []
 kill_switch = False
