@@ -95,12 +95,12 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		delta_thresh = 1800
 	else:
 		try:
-			int(delta_thresh)
+			int(delta_thresh[0])
 			is_int = True
 		except ValueError:
 			is_int = False
 		if is_int:
-			delta_thresh = int(delta_thresh)
+			delta_thresh = int(delta_thresh[0])
 		else:
 			delta_thresh = 1800
 
