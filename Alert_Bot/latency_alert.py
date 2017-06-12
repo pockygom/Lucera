@@ -149,12 +149,12 @@ def conv_delta_time(delta_string):
 def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list, delta_list, user=False):
 	# Initialize
 	att = []
-	msg = 'Latency Alerts!'
 
 	# Create an attachment for each database consisting of the additions and subtractions to the list
 	for dbs in delta_dbs_list:
 		i = 0
 		if not user:
+			msg = 'Latency Alerts!'
 			# Construct field string for list additions
 			if delta_list_additions:
 				add_str = ''
@@ -189,6 +189,7 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 			]
 
 		else:
+			msg = 'List of market data awaiting updates'
 			# Construct field string for list additions
 			event_str = ''
 			for delta in delta_list:
