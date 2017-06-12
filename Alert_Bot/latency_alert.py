@@ -148,20 +148,26 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 		i = 0
 		if not user:
 			# Construct field string for list additions
-			add_str = ''
-			for delta in delta_list_additions:
-				delta_split = delta.split()
-				if delta_split[0] == dbs:
-					add_str += ' '.join(delta_split[1:]) + '\n'
-					i += 1
+			if delta_list_additions:
+				add_str = ''
+				for delta in delta_list_additions:
+					delta_split = delta.split()
+					if delta_split[0] == dbs:
+						add_str += ' '.join(delta_split[1:]) + '\n'
+						i += 1
+			else:
+				add_str = 'None'
 		
 			# Construct field string for list subtractions
-			sub_str = ''
-			for delta in delta_list_subtractions:
-				delta_split = delta.split()
-				if delta_split[0] == dbs:
-					sub_str += ' '.join(delta_split[1:]) + '\n'
-					i -= 1
+			if delta_list_subtractions:
+				sub_str = ''
+				for delta in delta_list_subtractions:
+					delta_split = delta.split()
+					if delta_split[0] == dbs:
+						sub_str += ' '.join(delta_split[1:]) + '\n'
+						i -= 1
+			else:
+				sub_str = 'None'
 
 			field = [ 
 				{
