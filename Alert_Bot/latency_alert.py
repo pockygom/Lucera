@@ -152,7 +152,7 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 	if not user:
 		msg = 'Latency Alerts!'
 	else:
-		msg = 'List of market data awaiting updates'
+		msg = 'List of market data awaiting updates:'
 
 	# Create an attachment for each database consisting of the additions and subtractions to the list
 	for dbs in delta_dbs_list:
@@ -190,7 +190,6 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 					'value': sub_str
 				}
 			]
-
 		else:
 			# Construct field string for list additions
 			event_str = ''
