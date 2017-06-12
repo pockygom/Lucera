@@ -118,9 +118,15 @@ while True:
 				elif command == '!timers':
 					print('%s: Adding timers to the list of timers: %s' % (str(datetime.now()), command_tags))
 					for tag in command_tags:
-						if int(tag):
-							if tag not in event_timers:
-								event_timers.append(tag)
+						try:
+					    	int(tag)
+							is_int = True
+						except ValueError:
+							is_int = False
+						if is_int:
+							new_timer = int(tag)
+							if new_timer not in event_timers:
+								event_timers.append(new_timer)
 					event_msg = 'The current timer list includes: %s (in minutes)' % event_timers
 					event_att = []
 					event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time, user=True)
