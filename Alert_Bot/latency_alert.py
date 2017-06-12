@@ -93,7 +93,14 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Check if delta_thresh is an int
 	if not delta_thresh:
 		delta_thresh = 1800
-	if not isinstance(delta_thresh, int):
+	try:
+		int(delta_thresh)
+		is_int = True
+	except ValueError:
+		is_int = False
+	if is_int:
+		delta_thresh = int(delta_thresh)
+	else:
 		delta_thresh = 1800
 
 	# Update list
@@ -119,7 +126,6 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Create a message if there are new additions
 	if (delta_list_additions) or (delta_list_subtractions):
 		msg, att = compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list, [])
-		print(msg)
 	else:
 		msg = []
 		att = []
