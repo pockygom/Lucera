@@ -93,7 +93,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Check if delta_thresh is an int
 	if not delta_thresh:
 		delta_thresh = 1800
-	elif:
+	else:
 		try:
 			int(delta_thresh)
 			is_int = True
