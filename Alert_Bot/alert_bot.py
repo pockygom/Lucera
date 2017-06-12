@@ -82,6 +82,17 @@ while True:
 			print('%s: Autoupdating event list!' % str(datetime.now()))
 			event_calender, event_list, event_tags = event.update_event_list(event_tags, now)
 
+	# Alert updater
+	if alert_send_time != now:
+		if alert_thresh:
+			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh, alert_delta_list)
+			if alert_msg:
+				print('Sending latency alerts!')
+				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, send_time)
+				alert_msg = []
+			else:
+				print('No latency alerts found!')
+				alert_send_time = now
 
 	# Parse channel messages
 	rcvd_call = ['-1']
@@ -146,13 +157,14 @@ while True:
 					if alert_delta_list:
 						print('%s: Sending list of market data awaiting updates.' % str(datetime.now()))
 						alert_msg, alert_att = alert.compose_message([], [], alert_dbs_keys, alert_delta_list, user=True)
-						alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time, user=True)
+						alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time-timedelta(seconds=30), user=True)
+						alert_send_time += timedelta(seconds=30)
 						alert_msg = []
 
 				elif command == '!help':
 					print('%s: Printing list of commands for latency alerts.' % str(datetime.now()))
 					alert_msg, alert_att = alert.command_list()
-					alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time, user=True)
+					alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, send_time, user=True)
 
 			# Kill command
 			elif call['channel'] == 'D5M9ATXSQ': # Only pockygom can kill
@@ -160,18 +172,6 @@ while True:
 					print('%s: Killed' % str(datetime.now()))
 					kill_switch = True
 					break
-
-	# Alert updater
-	if alert_send_time != now:
-		if alert_thresh:
-			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh, alert_delta_list)
-			if alert_msg:
-				print('Sending latency alerts!')
-				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
-				alert_msg = []
-			else:
-				print('No latency alerts found!')
-				alert_send_time = now
 
 	# Print outputs to file
 		sys.stdout.flush()
