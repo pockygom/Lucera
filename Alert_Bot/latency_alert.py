@@ -191,6 +191,7 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 				}
 			]
 		else:
+			print('GO')
 			# Construct field string for list additions
 			event_str = ''
 			for delta in delta_list:
