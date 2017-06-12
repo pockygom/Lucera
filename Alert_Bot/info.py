@@ -8,16 +8,12 @@
 
 import csv
 import requests
-from threading import Timer, _Timer
 from datetime import datetime, timedelta, date
 import pytz
 
 # Slack channel
 chan = 'lumefx-data-info'
 chan_enc = 'C5LJANRSQ'
-
-# Calender update interval in seconds
-calender_update_timer = 1800 # Half hour
 
 # Current year
 current_year = [str(datetime.now().year)]
@@ -58,11 +54,7 @@ def update_event_list(command_tags, curr_time):
 	# Generate calender, list and output_tags
 	event_calender, event_list, output_tags = event_parse(command_tags, curr_time)
 	print('%s: Event list refreshed.' % str(datetime.now()))
-
-	# Start new timer to repeat
-	event_thread = Timer(calender_update_timer, update_event_list, [command_tags, curr_time])
-	event_thread.start()
-	return(event_calender, event_list, output_tags, event_thread)
+	return(event_calender, event_list, output_tags)
 
 # Parse through the events CSV file
 def event_parse(command_tags, curr_time):
@@ -154,19 +146,6 @@ def conv_time(row):
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
 	event_time = utc.localize(event_time)
 	return(event_time.astimezone(eastern))
-
-class CustomTimer(_Timer):
-	def __init__(self, interval, function, args=[], kwargs={}):
-		self._original_function = function
-		super(CustomTimer, self).__init__(
-			interval, self._do_execute, args, kwargs)
-
-	def _do_execute(self, *a, **kw):
-		self.result = self._original_function(*a, **kw)
-
-	def join(self):
-		super(CustomTimer, self).join()
-		return self.result
 
 # Send message consisting of a list of valid commands
 def command_list():

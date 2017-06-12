@@ -58,9 +58,7 @@ send_time = event.eastern.localize(datetime(1990,1,1,0,0))
 send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_time.microsecond)
 event_send_time = send_time
 alert_send_time = send_time
-event_thread = []
 event_timers = [0]
-alert_thread = []
 alert_delta_list = []
 alert_msg = []
 kill_switch = False
@@ -72,18 +70,18 @@ while True:
 
 	# Event alerts
 	if event_send_time != now:
-		if event_thread:
-			event_calender, event_list, output_tags, event_thread = event_thread.join()
 		if event_list:
 			event_alert_list, event_list = event.event_alerts(event_list, event_timers, now)
 			if event_alert_list:
 				print('%s: Sending event alerts for %s!' % (str(datetime.now()), str(event_send_time)))
 				event_msg, event_att = event.compose_message(event_alert_list, now)
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
+		else:
+			event_calender, event_list, event_tags = event.update_event_list(event_tags, now)
 
 	if alert_send_time != now:
-		if alert_thread:
-			alert_msg, alert_att, alert_thread, alert_delta_list, alert_dbs_keys = alert_thread.join()
+		if alert_thresh:
+			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh)
 			if alert_msg:
 				print('%s: Sending latency alerts for %s!' % (str(datetime.now()), str(alert_send_time)))
 				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
@@ -102,14 +100,12 @@ while True:
 			# Check the channel the message is from and use corresponding commands
 			if call['channel'] == event.chan_enc:
 				if command == '!parse':
-					if event_thread:
-						event_thread.cancel()
 					print('%s: Parsing list of upcoming events with the following tags: %s.' % (str(datetime.now()), command_tags))
-					event_calender, event_list, output_tags, event_thread = event.update_event_list(command_tags, now)
-					if not output_tags:
+					event_calender, event_list, event_tags = event.update_event_list(command_tags, now)
+					if not event_tags:
 						parse_msg = 'Parsing complete. Includes all events.' 
 					else:
-						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % output_tags
+						parse_msg = 'Parsing complete. Includes events with the following tags: %s.' % event_tags
 					_, event_att = event.compose_message(event_list, now)
 					event_send_time = send_msg(parse_msg, event_att, event.chan, now, event_send_time, user=True)
 
@@ -148,7 +144,7 @@ while True:
 					else:
 						command_tag = []
 					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
-					alert_msg, alert_att, alert_thread, alert_delta_list, alert_dbs_keys = alert.update_list(command_tag)
+					alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(command_tag)
 
 				elif command == '!alertlist':
 					if alert_delta_list:
@@ -167,10 +163,6 @@ while True:
 				if call['text'] == 'Kill Alert Bot!':
 					print('%s: Killed' % str(datetime.now()))
 					kill_switch = True
-					if alert_thread:
-						alert_thread.cancel()
-					if event_thread:
-						event_thread.cancel()
 					break
 
 	# Print outputs to file
