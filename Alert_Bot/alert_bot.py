@@ -77,13 +77,13 @@ while True:
 		if event_list:
 			event_alert_list, event_list = event.event_alerts(event_list, event_timers, now)
 			if event_alert_list:
+				print('%s: Sending event alerts for %s!' % (str(datetime.now()), str(event_send_time)))
 				event_msg, event_att = event.compose_message(event_alert_list, now)
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
-				print('%s: Event alerts sent for %s!' % (str(datetime.now()), str(event_send_time)))
 
-	if alert_msg:
+	if alert_msg:	
+		print('%s: Sending latency alerts for %s!' % (str(datetime.now()), str(alert_send_time)))
 		alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
-		print('%s: Latency alerts sent for %s!' % (str(datetime.now()), str(event_send_time)))
 		alert_msg = []
 
 	# Parse channel messages
