@@ -118,7 +118,7 @@ while True:
 				elif command == '!timers':
 					print('%s: Adding timers to the list of timers: %s' % (str(datetime.now()), command_tags))
 					for tag in command_tags:
-						if isinstance(tag, int):
+						if int(tag):
 							if tag not in event_timers:
 								event_timers.append(tags)
 					event_msg = 'The current timer list includes: %s (in minutes)' % event_timers

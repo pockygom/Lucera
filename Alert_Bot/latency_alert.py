@@ -215,5 +215,5 @@ def compose_list_message(delta_list, delta_dbs_list):
 
 def command_list():
 	att = []
-	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency threshold alert. Defaults to 30 minutes.\n	Checks if the latency for any market update exceeds a given threshold and sends a message when it does.\n	Stores a list of market data waiting to be updated.\n	When an item in the list is updated, Alert Bot sends a message.\n	Color represents how severe the latency is for the given database.'
+	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency threshold alert. Defaults to 30 minutes.\n	Checks if the latency for any market update exceeds a given threshold and sends a message when it does.\n	Stores a list of market data waiting to be updated.\n	When an item in the list is updated, Alert Bot sends a message.\n	Color represents how severe the latency is for the given database.\n!alertlist:\n	Sends the list of market data waiting to be updated for each database.'
 	return(msg, att)
