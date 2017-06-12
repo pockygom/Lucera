@@ -117,7 +117,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	alert_thread.start()
 
 	# Create a message if there are new additions
-	if delta_list_additions | delta_list_subtractions:
+	if (delta_list_additions) or (delta_list_subtractions):
 		msg, att = compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_list, [])
 	else:
 		msg = []
