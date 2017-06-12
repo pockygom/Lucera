@@ -95,12 +95,12 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		delta_thresh = 1800
 	else:
 		try:
-			int(delta_thresh[0])
+			int(delta_thresh)
 			is_int = True
 		except ValueError:
 			is_int = False
 		if is_int:
-			delta_thresh = int(delta_thresh[0])
+			delta_thresh = int(delta_thresh)
 		else:
 			delta_thresh = 1800
 
@@ -190,15 +190,18 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 					'value': sub_str
 				}
 			]
-		else:
+
+		if user:
 			print('GO')
 			# Construct field string for list additions
-			event_str = ''
 			for delta in delta_list:
+				event_str = ''
 				delta_split = delta.split()
 				if delta_split[0] == dbs:
 					event_str += ' '.join(delta_split[1:]) + '\n'
 					i += 1
+			else:
+				event_str = 'None'
 
 			field = [
 				{
