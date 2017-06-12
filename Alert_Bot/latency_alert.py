@@ -40,7 +40,7 @@ def get_data():
 		new_line = new_line.replace('\n', '')
 		data.append(new_line)
 		if new_line == '  } ]': # Last line of the url
-			data_obj(close)
+			data_obj.close()
 			break
 
 	# Convert string into dictionary
