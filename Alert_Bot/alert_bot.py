@@ -84,7 +84,7 @@ while True:
 
 	if alert_send_time != now:
 		if alert_thresh:
-			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh)
+			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh, alert_delta_list)
 			if alert_msg:
 				print('%s: Sending latency alerts for %s!' % (str(datetime.now()), str(alert_send_time)))
 				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
