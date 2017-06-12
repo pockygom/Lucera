@@ -141,7 +141,8 @@ while True:
 					if alert_thread:
 						alert_thread.cancel()
 					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
-					alert_msg, alert_att, alert_thread, alert_delta_list = alert.update_list(command_tags)
+					print(command_tags[0])
+					alert_msg, alert_att, alert_thread, alert_delta_list = alert.update_list(command_tags[0])
 
 				elif command == '!alertlist':
 					if alert_delta_list:

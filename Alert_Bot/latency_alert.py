@@ -93,15 +93,16 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Check if delta_thresh is an int
 	if not delta_thresh:
 		delta_thresh = 1800
-	try:
-		int(delta_thresh)
-		is_int = True
-	except ValueError:
-		is_int = False
-	if is_int:
-		delta_thresh = int(delta_thresh)
-	else:
-		delta_thresh = 1800
+	elif:
+		try:
+			int(delta_thresh)
+			is_int = True
+		except ValueError:
+			is_int = False
+		if is_int:
+			delta_thresh = int(delta_thresh)
+		else:
+			delta_thresh = 1800
 
 	# Update list
 	delta_list, ref_time = update_data(last_ref, delta_thresh)
