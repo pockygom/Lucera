@@ -30,18 +30,17 @@ colors = ['#FFDB99', 'warning', 'danger']
 # Receive and convert data
 def get_data():
 	# Open url
-	data_obj = requests.get(url)
+	data_obj = requests.get(url, stream=True)
 
 	# Format data
 	data = []
-	for line in data_obj:
+	for line in data_obj.iter_lines():
 		new_line = line.decode('utf-8')
 		new_line = new_line.replace('null', '[]')
 		new_line = new_line.replace('\n', '')
 		data.append(new_line)
-		print(new_line)
 		if new_line == '  } ]': # Last line of the url
-			del(data_obj)
+			data_obj(close)
 			break
 
 	# Convert string into dictionary
@@ -67,7 +66,6 @@ def update_data(last_ref, delta_thresh):
 
 	# Determine the update time for the market data
 	ref_time = data[database_keys[0]][0][ref_key]
-	print(ref_time)
 	
 	# Check if updatse are new and extract relevant information
 	if last_ref != ref_time:
@@ -106,7 +104,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		delta_list = past_delta_list
 		delta_list_additions = []
 	else: # If they are new determine additions and subtractions from the lists
-		print('Determining additions and subtractions from the market data.' % str(datetime.now()))
+		print('%s: Determining additions and subtractions from the market data.' % str(datetime.now()))
 		delta_list_additions = set(delta_list).difference(past_delta_list)
 		delta_list_subtractions = set(past_delta_list).difference(delta_list)
 		for addition in delta_list_additions:
@@ -188,5 +186,3 @@ def command_list():
 	att = []
 	msg = 'Valid commands for latency alerts include:\n!startalert <latency threshold in seconds>:\n	Initiates the latency threshold alert. Defaults to 30 minutes.\n	Checks if any of the latencies exceed a given threshold and sends a message when it does.'
 	return(msg, att)
-
-update_list([])
