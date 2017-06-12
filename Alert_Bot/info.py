@@ -155,7 +155,7 @@ def conv_time(row):
 	event_time = utc.localize(event_time)
 	return(event_time.astimezone(eastern))
 
-class CustomTimer(_Timer)
+class CustomTimer(_Timer):
 	def __init__(self, interval, function, args=[], kwargs={}):
 		self._original_function = function
 		super(CustomTimer, self).__init__(
