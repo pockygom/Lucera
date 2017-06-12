@@ -64,6 +64,7 @@ alert_send_time = send_time
 event_thread = []
 event_timers = [0]
 alert_thread = []
+alert_delta_list = []
 alert_msg = []
 kill_switch = False
 
