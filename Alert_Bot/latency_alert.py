@@ -112,7 +112,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		delta_list_additions = []
 		delta_list_subtractions = []
 	else: # If they are new determine additions and subtractions from the lists
-		print('%s: Determining additions and subtractions from the market data.' % str(datetime.now()))
+		print('Determining additions and subtractions from the market data.')
 		delta_list_additions = set(delta_list).difference(past_delta_list)
 		delta_list_subtractions = set(past_delta_list).difference(delta_list)
 		for addition in delta_list_additions:
