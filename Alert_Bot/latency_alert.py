@@ -23,6 +23,9 @@ ref_key = 'ref'
 # Message colors
 colors = ['#FFDB99', 'warning', 'danger']
 
+# Default latency threshold
+def_thresh = 1800
+
 # Receive and convert data
 def get_data():
 	# Open url
@@ -88,7 +91,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 
 	# Check if delta_thresh is an int
 	if not delta_thresh:
-		delta_thresh = 1800
+		delta_thresh = def_thresh
 	else:
 		try:
 			int(delta_thresh)
@@ -98,7 +101,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		if is_int:
 			delta_thresh = int(delta_thresh)
 		else:
-			delta_thresh = 1800
+			delta_thresh = def_thresh
 
 	# Update list
 	delta_list, ref_time, database_keys = update_data(last_ref, delta_thresh)

@@ -60,6 +60,7 @@ event_send_time = send_time
 alert_send_time = send_time
 event_timers = [0]
 event_tags = []
+alert_thresh = alert.def_thresh
 alert_delta_list = []
 alert_msg = []
 kill_switch = False
@@ -78,6 +79,7 @@ while True:
 				event_msg, event_att = event.compose_message(event_alert_list, now)
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
 		else:
+			print('%s: Autoupdating event list!')
 			event_calender, event_list, event_tags = event.update_event_list(event_tags, now)
 
 	if alert_send_time != now:
