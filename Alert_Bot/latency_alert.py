@@ -116,8 +116,13 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 		delta_list_additions = set(delta_list).difference(past_delta_list)
 		delta_list_subtractions = set(past_delta_list).difference(delta_list)
 		for addition in delta_list_additions:
-			if addition.split()[0] not in delta_dbs_list:
-				delta_dbs_list.append(addition.split()[0])
+			dbs_key = addition.split()[0]
+			if dbs_key not in delta_dbs_list:
+				delta_dbs_list.append(dbs_key)
+		for subtraction in delta_list_subtractions:
+			dbs_key = subtraction.split()[0]
+			if dbs_key not in delta_dbs_list:
+				delta_dbs_list.append(dbs_key)
 
 	# Create a message if there are new additions
 	if (delta_list_additions) or (delta_list_subtractions):
