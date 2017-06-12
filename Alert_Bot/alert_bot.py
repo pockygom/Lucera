@@ -119,7 +119,7 @@ while True:
 					print('%s: Adding timers to the list of timers: %s' % (str(datetime.now()), command_tags))
 					for tag in command_tags:
 						try:
-					    	int(tag)
+							int(tag)
 							is_int = True
 						except ValueError:
 							is_int = False
