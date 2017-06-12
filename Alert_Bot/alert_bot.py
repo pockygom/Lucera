@@ -120,7 +120,7 @@ while True:
 					for tag in command_tags:
 						if int(tag):
 							if tag not in event_timers:
-								event_timers.append(tags)
+								event_timers.append(tag)
 					event_msg = 'The current timer list includes: %s (in minutes)' % event_timers
 					event_att = []
 					event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time, user=True)
