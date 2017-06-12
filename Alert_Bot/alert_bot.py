@@ -62,7 +62,7 @@ send_time = send_time - timedelta(seconds=send_time.second, microseconds=send_ti
 event_send_time = send_time
 alert_send_time = send_time
 event_thread = []
-event_timers = []
+event_timers = [0]
 alert_thread = []
 alert_msg = []
 kill_switch = False
@@ -119,9 +119,9 @@ while True:
 					print('%s: Adding timers to the list of timers: %s' % (str(datetime.now()), command_tags))
 					for tag in command_tags:
 						if isinstance(tag, int):
-							if tag not in event_timer:
-								event_timer.append(tags)
-					event_msg = 'The current timer list includes: %s (in minutes)' % event_timer
+							if tag not in event_timers:
+								event_timers.append(tags)
+					event_msg = 'The current timer list includes: %s (in minutes)' % event_timers
 					event_att = []
 					event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time, user=True)
 
