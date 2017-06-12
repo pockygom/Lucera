@@ -70,7 +70,7 @@ while True:
 	now = event.eastern.localize(datetime.now())
 	now = now - timedelta(seconds=now.second, microseconds=now.microsecond)
 
-	# Event alerts
+	# Event updater
 	if event_send_time != now:
 		if event_list:
 			event_alert_list, event_list = event.event_alerts(event_list, event_timers, now)
@@ -82,16 +82,6 @@ while True:
 			print('%s: Autoupdating event list!' % str(datetime.now()))
 			event_calender, event_list, event_tags = event.update_event_list(event_tags, now)
 
-	if alert_send_time != now:
-		if alert_thresh:
-			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh, alert_delta_list)
-			if alert_msg:
-				print('Sending latency alerts!')
-				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
-				alert_msg = []
-			else:
-				print('No latency alerts found!')
-				alert_send_time = now
 
 	# Parse channel messages
 	rcvd_call = ['-1']
@@ -170,6 +160,18 @@ while True:
 					print('%s: Killed' % str(datetime.now()))
 					kill_switch = True
 					break
+
+	# Alert updater
+	if alert_send_time != now:
+		if alert_thresh:
+			alert_msg, alert_att, alert_delta_list, alert_dbs_keys, alert_thresh = alert.update_list(alert_thresh, alert_delta_list)
+			if alert_msg:
+				print('Sending latency alerts!')
+				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
+				alert_msg = []
+			else:
+				print('No latency alerts found!')
+				alert_send_time = now
 
 	# Print outputs to file
 		sys.stdout.flush()
