@@ -192,14 +192,14 @@ def compose_message(delta_list_additions, delta_list_subtractions, delta_dbs_lis
 			]
 
 		if user:
-			print('GO')
 			# Construct field string for list additions
-			for delta in delta_list:
+			if delta_list:
 				event_str = ''
-				delta_split = delta.split()
-				if delta_split[0] == dbs:
-					event_str += ' '.join(delta_split[1:]) + '\n'
-					i += 1
+				for delta in delta_list:
+					delta_split = delta.split()
+					if delta_split[0] == dbs:
+						event_str += ' '.join(delta_split[1:]) + '\n'
+						i += 1
 			else:
 				event_str = 'None'
 
