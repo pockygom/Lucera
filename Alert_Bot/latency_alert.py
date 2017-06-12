@@ -84,7 +84,7 @@ def update_data(last_ref, delta_thresh):
 							delta_data_string += ' '
 							delta_data_string += update[key]
 						delta_list.append(delta_data_string)
-	return(delta_list, ref_time)
+	return(delta_list, ref_time, database_keys)
 
 def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	# Initialize
@@ -105,7 +105,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 			delta_thresh = 1800
 
 	# Update list
-	delta_list, ref_time = update_data(last_ref, delta_thresh)
+	delta_list, ref_time, database_keys = update_data(last_ref, delta_thresh)
 
 	# Chcek if updates are new
 	if ref_time == last_ref:
@@ -130,7 +130,7 @@ def update_list(delta_thresh, past_delta_list=[], last_ref='-1'):
 	else:
 		msg = []
 		att = []
-	return(msg, att, alert_thread, delta_list)
+	return(msg, att, alert_thread, delta_list, database_keys)
 
 def conv_delta_time(delta_string):
 	# Check if string is valid then convert the delta time into a timedelta object

@@ -146,12 +146,12 @@ while True:
 					else:
 						command_tag = []
 					print('%s: Initiating log of latency alerts.' % str(datetime.now()))
-					alert_msg, alert_att, alert_thread, alert_delta_list = alert.update_list(command_tag)
+					alert_msg, alert_att, alert_thread, alert_delta_list, alert_dbs_keys = alert.update_list(command_tag)
 
 				elif command == '!alertlist':
 					if alert_delta_list:
 						print('%s: Sending list of market data awaiting updates.' % str(datetime.now()))
-						alert_msg, alert_att = alert.compose_message([], [], [], alert_delta_list, user=True)
+						alert_msg, alert_att = alert.compose_message([], [], alert_dbs_keys, alert_delta_list, user=True)
 						alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time, user=True)
 						alert_msg = []
 
