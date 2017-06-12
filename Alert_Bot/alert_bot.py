@@ -72,6 +72,8 @@ while True:
 
 	# Event alerts
 	if event_send_time != now:
+		if event_thread:
+			event_calender, event_list, output_tags, event_thread = event_thread.join()
 		if event_list:
 			event_alert_list, event_list = event.event_alerts(event_list, event_timers, now)
 			if event_alert_list:
@@ -79,10 +81,13 @@ while True:
 				event_msg, event_att = event.compose_message(event_alert_list, now)
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
 
-	if alert_msg:	
-		print('%s: Sending latency alerts for %s!' % (str(datetime.now()), str(alert_send_time)))
-		alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
-		alert_msg = []
+	if alert_send_time != now:
+		if alert_thread:
+			alert_msg, alert_att, alert_thread, alert_delta_list, alert_dbs_keys = alert_thread.join()
+			if alert_msg:
+				print('%s: Sending latency alerts for %s!' % (str(datetime.now()), str(alert_send_time)))
+				alert_send_time = send_msg(alert_msg, alert_att, alert.chan, now, alert_send_time)
+				alert_msg = []
 
 	# Parse channel messages
 	rcvd_call = ['-1']

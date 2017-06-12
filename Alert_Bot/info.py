@@ -8,7 +8,7 @@
 
 import csv
 import requests
-from threading import Timer
+from threading import Timer, _Timer
 from datetime import datetime, timedelta, date
 import pytz
 
@@ -154,6 +154,19 @@ def conv_time(row):
 	event_time = datetime.strptime(' '.join(event_time_string), time_fmt)
 	event_time = utc.localize(event_time)
 	return(event_time.astimezone(eastern))
+
+class CustomTimer(_Timer)
+	def __init__(self, interval, function, args=[], kwargs={}):
+		self._original_function = function
+		super(CustomTimer, self).__init__(
+			interval, self._do_execute, args, kwargs)
+
+	def _do_execute(self, *a, **kw):
+		self.result = self._original_function(*a, **kw)
+
+	def join(self):
+		super(CustomTimer, self).join()
+		return self.result
 
 # Send message consisting of a list of valid commands
 def command_list():
