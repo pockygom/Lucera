@@ -141,7 +141,8 @@ def conv_delta_time(delta_string):
 		else:
 			del(delta_string[1])
 			if len(delta_string) == 1:
-				delta_string.inster('00:00:00')
+				print(delta_string)
+				delta_string.insert('00:00:00')
 		delta_array = list(map(int, ' '.join(' '.join(delta_string).split(':')).split()))
 		delta_time = timedelta(days = delta_array[0], hours = delta_array[1], minutes = delta_array[2], seconds = delta_array[3])
 	else:
