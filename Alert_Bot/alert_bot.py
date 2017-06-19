@@ -80,7 +80,7 @@ while True:
 				event_send_time = send_msg(event_msg, event_att, event.chan, now, event_send_time)
 		else:
 			print('%s: Autoupdating event list!' % str(datetime.now()))
-			event_calender, event_list, event_tags = event.update_event_list(event_tags, now)
+			event_calender, event_list, event_tags = event.update_event_list(command_tags, now)
 
 	# Alert updater
 	if alert_send_time != now:
